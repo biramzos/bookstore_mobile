@@ -1,0 +1,110 @@
+PODS:
+  - Flutter (1.0.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - image_cropper (0.0.4):
+    - Flutter
+    - TOCropViewController (~> 2.6.1)
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
+  - Stripe (23.6.0):
+    - StripeApplePay (= 23.6.0)
+    - StripeCore (= 23.6.0)
+    - StripePayments (= 23.6.0)
+    - StripePaymentsUI (= 23.6.0)
+    - StripeUICore (= 23.6.0)
+  - stripe_ios (0.0.1):
+    - Flutter
+    - Stripe (= 23.6.0)
+    - StripeApplePay (= 23.6.0)
+    - StripeFinancialConnections (= 23.6.0)
+    - StripePayments (= 23.6.0)
+    - StripePaymentSheet (= 23.6.0)
+    - StripePaymentsUI (= 23.6.0)
+  - StripeApplePay (23.6.0):
+    - StripeCore (= 23.6.0)
+  - StripeCore (23.6.0)
+  - StripeFinancialConnections (23.6.0):
+    - StripeCore (= 23.6.0)
+    - StripeUICore (= 23.6.0)
+  - StripePayments (23.6.0):
+    - StripeCore (= 23.6.0)
+    - StripePayments/Stripe3DS2 (= 23.6.0)
+  - StripePayments/Stripe3DS2 (23.6.0):
+    - StripeCore (= 23.6.0)
+  - StripePaymentSheet (23.6.0):
+    - StripeApplePay (= 23.6.0)
+    - StripeCore (= 23.6.0)
+    - StripePayments (= 23.6.0)
+    - StripePaymentsUI (= 23.6.0)
+  - StripePaymentsUI (23.6.0):
+    - StripeCore (= 23.6.0)
+    - StripePayments (= 23.6.0)
+    - StripeUICore (= 23.6.0)
+  - StripeUICore (23.6.0):
+    - StripeCore (= 23.6.0)
+  - TOCropViewController (2.6.1)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - stripe_ios (from `.symlinks/plugins/stripe_ios/ios`)
+
+SPEC REPOS:
+  trunk:
+    - FMDB
+    - Stripe
+    - StripeApplePay
+    - StripeCore
+    - StripeFinancialConnections
+    - StripePayments
+    - StripePaymentSheet
+    - StripePaymentsUI
+    - StripeUICore
+    - TOCropViewController
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+  stripe_ios:
+    :path: ".symlinks/plugins/stripe_ios/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  Stripe: 097f76ce332ff7dcb8a29ec2a8379bb4f34aa14d
+  stripe_ios: dfb96f1e36a0feb24596e280dfdc33d4106e9e77
+  StripeApplePay: 484761d4760ddb8af8c1510b8735cd9aee94515f
+  StripeCore: 0e83ad26d508e5a8e9eb04d6ddd3cbb08a3f7816
+  StripeFinancialConnections: eb303783458a7e5bd4380cbbf0a6cf44246473f4
+  StripePayments: cdd5222052d541f4daf1d84515f0b9cd18720534
+  StripePaymentSheet: 835aabcac7946d6b6b341055d021428b96894b70
+  StripePaymentsUI: 835b9422f86ceb2ca02b4146db9d3f7bf1acb0d9
+  StripeUICore: 81bac0f54df659ab7c5dd4f5a57719a5fecdcdc9
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
+
+PODFILE CHECKSUM: 0472acb66f34e7af28a553368061c401448723b2
+
+COCOAPODS: 1.12.1
