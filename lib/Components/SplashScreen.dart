@@ -7,9 +7,11 @@ import '../Backup/Data.dart';
 import '../Model/User.dart';
 import '../Pages/LoginPage/LoginPage.dart';
 import '../Pages/MainPage/MainPage.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   SplashScreenState createState() => SplashScreenState();

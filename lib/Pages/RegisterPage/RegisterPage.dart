@@ -9,9 +9,10 @@ import '../LoginPage/LoginPage.dart';
 import '../MainPage/MainPage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key, });
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -129,9 +130,9 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(
               height: 70,
             ),
-            const Text(
-              'Sign up',
-              style: TextStyle(
+            Text(
+              tr("sign_up"),
+              style: const TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold
               ),
@@ -231,9 +232,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   submit()
                 }
               }),
-              child: const Text(
-                '    Sign up    ',
-                style: TextStyle(
+              child: Text(
+                tr("sign_up"),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
                     fontSize: 20,
                     color: Colors.white
                 ),

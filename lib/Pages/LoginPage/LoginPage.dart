@@ -2,13 +2,13 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../../APIs/UserService.dart';
 import '../MainPage/MainPage.dart';
 import '../RegisterPage/RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, });
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -74,9 +74,9 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 100,
               ),
-              const Text(
-                'Sign in',
-                style: TextStyle(
+              Text(
+                tr('sign_in'),
+                style: const TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold
                 ),
@@ -91,8 +91,8 @@ class _LoginPageState extends State<LoginPage> {
                     right: 50,
                     bottom: 0),
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'Enter username',
+                  decoration: InputDecoration(
+                    hintText: 'enter_username'.tr(),
                   ),
                   controller: usernameController,
                   autocorrect: false,
@@ -109,8 +109,8 @@ class _LoginPageState extends State<LoginPage> {
                     right: 50,
                     bottom: 0),
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'Enter password',
+                  decoration: InputDecoration(
+                    hintText: 'enter_password'.tr(),
                   ),
                   controller: passwordController,
                   obscureText: true,
@@ -139,9 +139,10 @@ class _LoginPageState extends State<LoginPage> {
                       submit()
                     }
                   }),
-                  child: const Text(
-                      '    Sign in    ',
-                    style: TextStyle(
+                  child: Text(
+                      "sign_in".tr(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
                       fontSize: 20,
                       color: Colors.white
                     ),
@@ -166,9 +167,9 @@ class _LoginPageState extends State<LoginPage> {
                       MaterialPageRoute(
                           builder: (context) => const RegisterPage() ));
                 },
-                child: const Text(
-                    "Do not have an account?",
-                  style: TextStyle(
+                child: Text(
+                    "do_not_have_an_account".tr(),
+                  style: const TextStyle(
                     fontSize: 15
                   ),
                 ),

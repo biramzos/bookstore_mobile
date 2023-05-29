@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:Bookstore/APIs/BasketService.dart';
 import 'package:Bookstore/APIs/BookService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
@@ -12,10 +12,11 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import '../../../Model/Basket.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
+import 'package:translator/translator.dart';
 
 class PaymentPage extends StatefulWidget {
   // final User data;
-  const PaymentPage({super.key,});
+  const PaymentPage({Key? key}) : super(key: key);
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();

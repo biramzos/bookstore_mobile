@@ -5,13 +5,13 @@ import 'package:Bookstore/Model/User.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../Model/Basket.dart';
 import '../Model/Book.dart';
 
 class UserService {
 
-  static const String URL = "http://localhost:8000/api/v1/auth";
+  static String URL = "${dotenv.env["URL"]}/api/v1/auth";
 
   static Future<User?> login(username, password) async{
     var response = await Dio().post(
@@ -43,6 +43,7 @@ class UserService {
     );
     return User.fromJson(response.data);
   }
+
 
 
   static Future<User?> register(firstname, lastname, email, username, password, image) async{

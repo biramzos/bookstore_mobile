@@ -1,21 +1,28 @@
-
 import 'package:Bookstore/APIs/BookService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
 import 'package:flutter/material.dart';
 import '../Model/Book.dart';
 import '../Model/User.dart';
 import '../Pages/MainPage/BookPage/BookPage.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:translator/translator.dart';
 
-class BookContainer extends StatelessWidget{
+class BookContainer extends StatefulWidget {
   final Book book;
   final User user;
-  const BookContainer({super.key, required this.user, required this.book});
+  const BookContainer({Key? key, required this.user, required this.book}) : super(key: key);
+
+  @override
+  State<BookContainer> createState() => BookContainerState();
+}
+
+class BookContainerState extends State<BookContainer>{
 
   @override
   Widget build(BuildContext context) {
     bool? data;
     getInit() async {
-      data = await UserService.checkFavourites(user.token, book.id);
+      data = await UserService.checkFavourites(widget.user.token, widget.book.id);
     }
     getInit();
     return GestureDetector(
@@ -23,7 +30,9 @@ class BookContainer extends StatelessWidget{
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BookPage(user: user, book: book, liked: data!)
+                builder: (context) =>
+                    BookPage(
+                        user: widget.user, book: widget.book, liked: data!)
             )
         );
       },
@@ -49,7 +58,7 @@ class BookContainer extends StatelessWidget{
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Image.network(
-                    BookService.getPreviewLinkById(book.id),
+                    BookService.getPreviewLinkById(widget.book.id),
                     width: 70,
                   ),
                 ),
@@ -62,7 +71,7 @@ class BookContainer extends StatelessWidget{
                     child: Column(
                       children: [
                         Text(
-                          "${book.name}",
+                          '${widget.book.name}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 17,
@@ -74,7 +83,7 @@ class BookContainer extends StatelessWidget{
                         ),
                         const SizedBox(height: 10,),
                         Text(
-                          "${book.author}",
+                          '${widget.book.author}',
                           style: const TextStyle(
                               fontSize: 16
                           ),
@@ -84,7 +93,7 @@ class BookContainer extends StatelessWidget{
                         ),
                         const SizedBox(height: 10,),
                         Text(
-                          "${book.cost.toInt()} ₸",
+                          "${widget.book.cost.toInt()} ₸",
                           softWrap: false,
                           maxLines: 2,
                           style: const TextStyle(

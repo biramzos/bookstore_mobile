@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:Bookstore/APIs/BasketService.dart';
 import 'package:Bookstore/APIs/BookService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
@@ -8,10 +6,12 @@ import 'package:flutter/material.dart';
 import '../../../Model/Basket.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:translator/translator.dart';
 
 class BasketHistoryPage extends StatefulWidget {
   final User data;
-  const BasketHistoryPage({super.key, required this.data});
+  const BasketHistoryPage({Key? key, required this.data}) : super(key: key);
 
   @override
   State<BasketHistoryPage> createState() => _BasketHistoryPageState();
@@ -33,12 +33,12 @@ class _BasketHistoryPageState extends State<BasketHistoryPage> {
   }
 
   getData() async {
-    await basketService.getUserBaskets(widget.data.token).then((value) => baskets = value.cast<Basket>());
+    await BasketService.getUserBaskets(widget.data.token).then((value) => baskets = value.cast<Basket>());
     if(widget.data.baskets!.isEmpty){
-      await basketService.create(widget.data.token);
-      await basketService.getCurrentBasket(widget.data.token).then((value) => basket = value!.books);
+      await BasketService.create(widget.data.token);
+      await BasketService.getCurrentBasket(widget.data.token).then((value) => basket = value!.books);
     } else {
-      await basketService.getCurrentBasket(widget.data.token).then((value) => basket = value!.books);
+      await BasketService.getCurrentBasket(widget.data.token).then((value) => basket = value!.books);
     }
   }
 

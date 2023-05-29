@@ -1,19 +1,20 @@
 
 import 'package:Bookstore/Model/Basket.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class BasketService {
   // ignore: non_constant_identifier_names
-  final String URL = "http://localhost:8000/api/v1/baskets";
+  static final String URL = "${dotenv.env["URL"]}/api/v1/baskets";
 
-  Future<List<Basket>> getBaskets() async{
+  static Future<List<Basket>> getBaskets() async{
     var response = await Dio().get(
         '$URL/'
     );
     return (response.data as List).map((e) => Basket.fromJson(e)).toList();
   }
 
-  Future<Basket?> getCurrentBasket(token) async{
+  static Future<Basket?> getCurrentBasket(token) async{
     var response = await Dio().get(
         '$URL/current/basket',
         options: Options(
@@ -25,7 +26,7 @@ class BasketService {
     return Basket.fromJson(response.data);
   }
 
-  Future<void> create(token) async{
+  static Future<void> create(token) async{
     var response = await Dio().post(
         '$URL/create',
         options: Options(
@@ -36,7 +37,7 @@ class BasketService {
     );
   }
 
-  Future<List<Basket?>> getUserBaskets(token) async{
+  static Future<List<Basket?>> getUserBaskets(token) async{
     var response = await Dio().get(
         '$URL/user',
         options: Options(
@@ -48,21 +49,36 @@ class BasketService {
     return (response.data as List).map((e) => Basket.fromJson(e)).toList();
   }
 
-  Future<void> addBookToBasket(basketId, bookId) async{
+  static Future<void> addBookToBasket(basketId, bookId, token) async{
     var response = await Dio().get(
-        '$URL/$basketId/add/$basketId'
+        '$URL/$basketId/add/$bookId',
+        options: Options(
+          headers: {
+            "Authorization":"Bearer $token"
+          }
+        )
     );
   }
 
-  Future<void> removeBookToBasket(basketId, bookId) async{
+  static Future<void> removeBookToBasket(basketId, bookId, token) async{
     var response = await Dio().get(
-        '$URL/$basketId/remove/$basketId'
+        '$URL/$basketId/remove/$bookId',
+        options: Options(
+            headers: {
+              "Authorization":"Bearer $token"
+            }
+        )
     );
   }
 
-  Future<Basket?> payBasket(basketId) async{
+  static Future<Basket?> payBasket(basketId, token) async{
     var response = await Dio().get(
-        '$URL/$basketId/pay'
+        '$URL/$basketId/pay',
+        options: Options(
+            headers: {
+              "Authorization":"Bearer $token"
+            }
+        )
     );
   }
 

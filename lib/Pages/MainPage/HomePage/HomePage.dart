@@ -6,10 +6,12 @@ import 'package:Bookstore/Components/BookContainer.dart';
 import 'package:flutter/material.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:translator/translator.dart';
 
 class HomePage extends StatefulWidget {
   final User data;
-  const HomePage({super.key, required this.data});
+  const HomePage({Key? key, required this.data}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();

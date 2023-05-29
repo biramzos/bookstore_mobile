@@ -6,10 +6,12 @@ import 'package:Bookstore/Components/BookContainer.dart';
 import 'package:flutter/material.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:translator/translator.dart';
 
 class FavouritesPage extends StatefulWidget {
   final User user;
-  const FavouritesPage({super.key, required this.user});
+  const FavouritesPage({Key? key, required this.user}) : super(key: key);
 
   @override
   State<FavouritesPage> createState() => _FavouritesPageState();
@@ -53,15 +55,41 @@ class _FavouritesPageState extends State<FavouritesPage> {
         ),
       );
     }
+    else if(books!.isEmpty){
+      return Scaffold(
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await getData();
+          },
+          child: Container(
+            color: Colors.white,
+            child: Center(
+              child: Text(
+                "there_is_no_books".tr(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 30
+                ),
+              )
+            ),
+          ),
+        ),
+      );
+    }
     return Scaffold(
-      body: Center(
-        child: ListView.builder(
-          itemCount: books!.length,
-          itemBuilder: (BuildContext context, int index) {
-            return BookContainer(
-              book: books![index],
-              user: widget.user,
-            );},
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await getData();
+        },
+        child: Center(
+          child: ListView.builder(
+            itemCount: books!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return BookContainer(
+                book: books![index],
+                user: widget.user,
+              );},
+          ),
         ),
       ),
     );

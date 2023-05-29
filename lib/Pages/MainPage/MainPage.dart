@@ -13,10 +13,12 @@ import 'BasketPage/BasketPage.dart';
 import 'HomePage/HomePage.dart';
 import 'ProfilePage/ProfilePage.dart';
 import 'SearchPage/SearchPage.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 
 class MainPage extends StatefulWidget {
   final User data;
-  const MainPage({super.key, required this.data});
+  const MainPage({Key? key, required this.data}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -66,37 +68,38 @@ class _MainPageState extends State<MainPage> {
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.green,
           selectedItemColor: Colors.white,
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(
+              icon: const Icon(
                   Icons.home
               ),
-              label: 'Home'
+              label: tr("home")
             ),
             BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                     Icons.shopping_basket
                 ),
-                label: 'Basket'
+                label: tr("basket")
             ),
             BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                     Icons.search,
                     size: 30,
                 ),
-                label: 'Search'
+                label: tr('search')
             ),
             BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                     Icons.favorite_outline_rounded
                 ),
-                label: 'Favourites'
+                label: tr('favourites')
             ),
             BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                     Icons.account_box_rounded
                 ),
-                label: "Profile"
+                label: tr("profile"),
+
             )
           ],
           currentIndex: index,
@@ -112,7 +115,7 @@ class _MainPageState extends State<MainPage> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text('Do you want to exit app?'),
+              title: Text('do_you_want_to_exit_app'.tr()),
               actionsAlignment: MainAxisAlignment.spaceBetween,
               actions: [
                 TextButton(
@@ -123,13 +126,13 @@ class _MainPageState extends State<MainPage> {
                       exit(0);
                     }
                   },
-                  child: const Text('Yes'),
+                  child: Text('yes'.tr()),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context, false);
                   },
-                  child: const Text('No'),
+                  child: Text('no'.tr()),
                 ),
               ],
             );

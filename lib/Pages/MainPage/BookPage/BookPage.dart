@@ -1,29 +1,19 @@
-
-import 'dart:collection';
-
 import 'package:Bookstore/APIs/UserService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
-
-// ignore_for_file: avoid_print
-
+import 'package:translator/translator.dart';
 import 'package:Bookstore/APIs/BasketService.dart';
 import 'package:Bookstore/APIs/BookService.dart';
-import 'package:Bookstore/APIs/UserService.dart';
-import 'package:Bookstore/Components/BookContainer.dart';
-import 'package:flutter/material.dart';
 import '../../../Model/Basket.dart';
-import '../../../Model/Book.dart';
-import '../../../Model/User.dart';
 
 class BookPage extends StatefulWidget {
   final Book book;
   final User user;
   final bool liked;
-  const BookPage({super.key, required this.user, required this.book, required this.liked});
+  const BookPage({Key? key, required this.user, required this.book, required this.liked}) : super(key: key);
 
   @override
   State<BookPage> createState() => _BookPageState();
@@ -32,39 +22,45 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   bool? liked;
   Basket? basket;
-  List<Basket>? baskets;
   bool checker = false;
-  BasketService basketService = BasketService();
+  String? desc;
 
   @override
   void initState() {
     getData();
     setState(() {
       liked = widget.liked;
-      // basket!.books.map((e) => {
-      //   if(e.id == widget.book.id){
-      //     checker = true
-      //   } else {
-      //     checker = false
-      //   }
-      // });
     });
     super.initState();
   }
 
   getData() async {
-    await basketService.getUserBaskets(widget.user.token).then((value) => baskets = value.cast<Basket>());
-    if(baskets!.isEmpty){
-      await basketService.create(widget.user.token);
-      await basketService.getCurrentBasket(widget.user.token).then((value) => basket = value!);
-    } else {
-      await basketService.getCurrentBasket(widget.user.token).then((value) => basket = value!);
-    }
+    await BasketService.getCurrentBasket(widget.user.token).then(
+            (value) => (setState((){
+              basket = value;
+            })));
+    await widget.book.description!.translate(to: context.locale.languageCode).then((value) => setState((){
+      desc = value.text;
+    }));
   }
 
 
   @override
   Widget build(BuildContext context) {
+    if(desc == null){
+      return Scaffold(
+        body: Container(
+          color: Colors.white,
+          child: Center(
+            child: Image.asset(
+              'assets/images/loader.gif',
+              width: 200,
+              height: 200,
+            ),
+          ),
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -184,9 +180,9 @@ class _BookPageState extends State<BookPage> {
                           const SizedBox(
                             height: 30,
                           ),
-                          const Text(
-                              "Description",
-                              style: TextStyle(
+                          Text(
+                              "description".tr(),
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17
                               ),
@@ -195,34 +191,33 @@ class _BookPageState extends State<BookPage> {
                             height: 10,
                           ),
                           Text(
-                            '${widget.book.description}',
+                            '$desc',
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           const SizedBox(
                             height: 10,
-                          )
-                          ,
-                          // (checker)
-                          //     ? TextButton(
-                          //     onPressed: (){
-                          //       setState(() {
-                          //         basketService.removeBookToBasket(basket!.id, widget.book.id);
-                          //         checker = false;
-                          //       });
-                          //     },
-                          //     child: const Text("Remove from basket")
-                          //   )
-                          //     : TextButton(
-                          //     onPressed: (){
-                          //       setState(() {
-                          //         basketService.addBookToBasket(basket!.id, widget.book.id);
-                          //         checker = true;
-                          //       });
-                          //     },
-                          //     child: const Text("Add to basket")
-                          //   )
+                          ),
+                          (checker)
+                              ? TextButton(
+                              onPressed: (){
+                                setState(() {
+                                  BasketService.removeBookToBasket(basket!.id, widget.book.id, widget.user.token);
+                                  checker = false;
+                                });
+                              },
+                              child: Text("remove_from_basket".tr())
+                            )
+                              : TextButton(
+                              onPressed: (){
+                                setState(() {
+                                  BasketService.addBookToBasket(basket!.id, widget.book.id, widget.user.token);
+                                  checker = true;
+                                });
+                              },
+                              child: Text("add_to_basket".tr())
+                            )
                         ],
                       ),
                     )

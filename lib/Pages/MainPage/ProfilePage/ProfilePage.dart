@@ -7,16 +7,23 @@ import 'package:Bookstore/Pages/MainPage/PaymentPage/PaymentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../Model/User.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:translator/translator.dart';
 
 class ProfilePage extends StatefulWidget {
   final User data;
-  const ProfilePage({super.key, required this.data, });
+  const ProfilePage({Key? key, required this.data, }) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  List<Locale> options = const [
+    Locale('en', 'US'),
+    Locale('ru', 'RU'),
+    Locale('kk', 'KZ')
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +84,8 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   Text(
-                    "Email: ${widget.data.email}\n\n"
-                        "Username: ${widget.data.username}"
+                    "${'email'.tr()}:\n${widget.data.email}\n\n"
+                        "${'username'.tr()}:\n${widget.data.username}"
                         ,
                     style: const TextStyle(
                         fontWeight: FontWeight.w500,
@@ -111,6 +118,37 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 20,
             ),
+            Row(
+              children: [
+                Text(
+                  '${'language'.tr()}:'
+                ),
+                const SizedBox(
+                  width: 30,
+                ),
+                DropdownButton(
+                    value: context.locale.languageCode,
+                    items: options.map((Locale locale) {
+                      return DropdownMenuItem<String>(
+                        value: locale.languageCode,
+                        child: Text(locale.languageCode.tr(),),
+                      );
+                    }).toList(),
+                    onChanged: (lanCode) {
+                      Locale? locale = options.where((element) => (element.languageCode == lanCode)).first;
+                      setState(() {
+                        context.setLocale(locale);
+                      });
+                    },
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             TextButton(
                 onPressed: () async {
                   await DB.deleteAllUser();
@@ -118,9 +156,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.pop(context);
                   }
                 },
-                child: const Text(
-                    "Log out",
-                  style: TextStyle(
+                child: Text(
+                    "log_out".tr(),
+                  style: const TextStyle(
                     color: Colors.green,
                     fontSize: 18,
                     fontWeight: FontWeight.w700
