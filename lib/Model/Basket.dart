@@ -4,13 +4,15 @@ import 'Book.dart';
 class Basket {
   final int id;
   final String? date;
-  final List<Book> books;
+  final List<Book>? books;
   final String? status;
+  final double? total;
   Basket(
       this.id,
       this.date,
       this.books,
       this.status,
+      this.total
       );
 
   factory Basket.fromJson(Map<String, dynamic> data){
@@ -18,7 +20,8 @@ class Basket {
         data['id'],
         data['date'],
         (data['books'] as List).map((e) => Book.fromJson(e)).toList(),
-        data['status']
+        data['status'],
+        data['total']
     );
   }
 
@@ -26,6 +29,7 @@ class Basket {
     "id": id,
     "date": date,
     "books": books,
-    "status": status
+    "status": status,
+    "total": total
   };
 }

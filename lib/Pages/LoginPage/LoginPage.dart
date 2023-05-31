@@ -15,6 +15,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  List<Locale> options = const [
+    Locale('en', 'US'),
+    Locale('ru', 'RU'),
+    Locale('kk', 'KZ')
+  ];
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String? message = "";
@@ -37,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
               passwordController.text = "";
             });
           }
+          throw e;
     });
   }
 
@@ -162,10 +168,24 @@ class _LoginPageState extends State<LoginPage> {
               ),
               GestureDetector(
                 onTap: () {
+
+                },
+                child: Text(
+                  "forget_password".tr(),
+                  style: const TextStyle(
+                      fontSize: 15
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              GestureDetector(
+                onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RegisterPage() ));
+                          builder: (context) => const RegisterPage()));
                 },
                 child: Text(
                     "do_not_have_an_account".tr(),
@@ -173,6 +193,35 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 15
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                      '${'language'.tr()}:'
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  DropdownButton(
+                    value: context.locale.languageCode,
+                    items: options.map((Locale locale) {
+                      return DropdownMenuItem<String>(
+                        value: locale.languageCode,
+                        child: Text(locale.languageCode.tr(),),
+                      );
+                    }).toList(),
+                    onChanged: (lanCode) {
+                      Locale? locale = options.where((element) => (element.languageCode == lanCode)).first;
+                      setState(() {
+                        context.setLocale(locale);
+                      });
+                    },
+                  )
+                ],
               ),
             ],
         )

@@ -6,14 +6,12 @@ class User {
   final String? username;
   final String? email;
   final String? token;
-  late final List<Basket>? baskets;
   User(
       this.id,
       this.fullname,
       this.username,
       this.email,
-      this.token,
-      this.baskets
+      this.token
       );
 
   User.fromJson(dynamic data):
@@ -21,15 +19,5 @@ class User {
         fullname = data['fullname'],
         username = data['username'],
         email = data['email'],
-        token = data['token'],
-        baskets = (data['baskets'] as List).map((e) => Basket.fromJson(e)).toList();
-
-  Map toJson() => {
-    "id": id,
-    "fullname": fullname,
-    "username": username,
-    "email": email,
-    "token": token,
-    "baskets":baskets
-  };
+        token = data['token'];
 }

@@ -1,14 +1,12 @@
 import 'User.dart';
 
 class Message{
-  final int id;
   final String? sender;
   final String? content;
   final String? receiver;
   final String? time;
 
   Message(
-      this.id,
       this.sender,
       this.content,
       this.receiver,
@@ -17,20 +15,11 @@ class Message{
 
   factory Message.fromJson(Map<String, dynamic> data){
     return Message(
-        data['id'],
-        data['sender'],
+        data['sender']['username'],
         data['content'],
-        data['receiver'],
+        data['receiver']['username'],
         data['time']
     );
   }
-
-  Map toJson() => {
-    "id": id,
-    "sender": sender,
-    "content": content,
-    "receiver": receiver,
-    "time": time
-  };
 
 }

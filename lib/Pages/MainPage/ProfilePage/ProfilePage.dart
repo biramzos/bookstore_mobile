@@ -1,9 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:Bookstore/APIs/UserService.dart';
 import 'package:Bookstore/Backup/DB.dart';
 import 'package:Bookstore/Components/SplashScreen.dart';
-import 'package:Bookstore/Pages/MainPage/PaymentPage/PaymentPage.dart';
+import 'package:Bookstore/Pages/BoughtPage/BoughtPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../Model/User.dart';
@@ -105,23 +107,27 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 20,
             ),
             TextButton(
-              child: Text("PAYMENT PAGE"),
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PaymentPage()
-                    )
+                onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BoughtPage(user: widget.data)));
+                },
+                child: Container(
+                  child: Text("bills".tr()),
                 )
-              },
             ),
             const SizedBox(
               height: 20,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '${'language'.tr()}:'
+                  '${'language'.tr()}:',
+                  style: const TextStyle(
+                    fontSize: 17
+                  ),
                 ),
                 const SizedBox(
                   width: 30,
@@ -144,17 +150,14 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
             const SizedBox(
-              height: 20,
-            ),
-            const SizedBox(
-              height: 20,
+              height: 10,
             ),
             TextButton(
                 onPressed: () async {
                   await DB.deleteAllUser();
-                  if(Navigator.canPop(context)) {
-                    Navigator.pop(context);
-                  }
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SplashScreen()));
                 },
                 child: Text(
                     "log_out".tr(),

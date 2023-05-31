@@ -1,9 +1,8 @@
 import 'package:Bookstore/Backup/DB.dart';
 import 'package:Bookstore/Components/SplashScreen.dart';
-import 'package:Bookstore/Pages/MainPage/BasketHistoryPage/BasketHostoryPage.dart';
 import 'package:Bookstore/Pages/MainPage/BookPage/BookPage.dart';
+import 'package:Bookstore/Pages/MainPage/ChatsPage/ChatsPage.dart';
 import 'package:Bookstore/Pages/MainPage/FavouritesPage/FavouritesPage.dart';
-import 'package:Bookstore/Pages/MainPage/PaymentPage/PaymentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -61,6 +60,14 @@ class _MainPageState extends State<MainPage> {
         appBar: AppBar(
           title: const Text('QazaqBooks'),
           backgroundColor: Colors.green,
+          actions: [
+            IconButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(user: widget.data)));
+                },
+                icon: const Icon(Icons.chat, color: Colors.white)
+            )
+          ],
         ),
         body: fragments[index],
         bottomNavigationBar: BottomNavigationBar(

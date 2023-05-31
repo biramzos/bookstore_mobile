@@ -26,7 +26,7 @@ class _SearchPageState extends State<SearchPage> {
     'Classic',
     'Horror'
   ];
-  Set<String> selectedItems = {};
+  List<String> selectedItems = [];
 
   @override
   void initState() {
@@ -58,6 +58,69 @@ class _SearchPageState extends State<SearchPage> {
           }
         });
       }
+    }
+  }
+
+  void _openFilterModal(BuildContext context) async {
+    final selectedOptions = await showModalBottomSheet<List<String>>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Select Filters',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: options.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final option = options[index];
+                      final isSelected = selectedItems.contains(option);
+                      return CheckboxListTile(
+                        title: Text(option),
+                        value: isSelected,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            if (value!) {
+                              selectedItems.add(option);
+                            } else {
+                              selectedItems.remove(option);
+                            }
+                          });
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(selectedItems);
+                    },
+                    child: Text('Apply Filters'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    if (selectedOptions != null) {
+      setState(() {
+        selectedItems = selectedOptions;
+      });
     }
   }
 
@@ -102,50 +165,9 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   IconButton(
                       onPressed: (){
-                        print(List.from(selectedItems));
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Modal Window'),
-                              content: Container(
-                                width: double.maxFinite,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: options.length,
-                                  itemBuilder: (context, index) {
-                                    final item = options[index];
-                                    bool isSelected = selectedItems.contains(item);
-                                    return CheckboxListTile(
-                                      title: Text(item),
-                                      value: isSelected,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          isSelected = value!;
-                                        });
-                                        if (isSelected) {
-                                          selectedItems.add(item);
-                                        } else {
-                                          selectedItems.remove(item);
-                                        }
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: Text("close".tr()),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        _openFilterModal(context);
                       },
-                      icon: const Icon(Icons.settings_suggest)
+                      icon: const Icon(Icons.filter_list)
                   )
                 ]
               ),

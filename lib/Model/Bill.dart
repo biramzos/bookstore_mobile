@@ -1,29 +1,27 @@
-class Payment {
+import 'package:Bookstore/Model/Basket.dart';
+import 'package:Bookstore/Model/User.dart';
+
+class Bill {
   final int? id;
-  final int? basketId;
-  final double? cost;
-  final int? creditId;
+  final Basket? basket;
+  final String? paymentId;
+  final User? customer;
   final String? status;
-  Payment(
+  final String? time;
+  Bill(
       this.id,
-      this.basketId,
-      this.cost,
-      this.creditId,
-      this.status
+      this.basket,
+      this.paymentId,
+      this.customer,
+      this.status,
+      this.time
       );
 
-  Payment.fromJson(dynamic data):
+  Bill.fromJson(dynamic data):
         id = data['id'],
-        basketId = data['basket'],
-        cost = data['cost'],
-        creditId = data['credit'],
-        status = data['status'];
-
-  Map toJson() => {
-    "id": id,
-    "basket": basketId,
-    "cost": cost,
-    "credit": creditId,
-    "status": status
-  };
+        basket = Basket.fromJson(data['basket']),
+        paymentId = data['paymentId'],
+        customer = User.fromJson(data['customer']),
+        status = data['status'],
+        time = data['time'];
 }

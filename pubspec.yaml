@@ -47,7 +47,9 @@ dependencies:
   translator: ^0.1.7
   web_socket_channel: any
   stomp_dart_client: any
-  advance_pdf_viewer: ^2.0.0
+  sockjs_client_wrapper: ^1.2.0
+  syncfusion_flutter_pdfviewer: ^19.1.69-beta
+  http: ^0.13.0
 
 
 dev_dependencies:

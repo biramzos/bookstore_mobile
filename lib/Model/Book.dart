@@ -1,15 +1,19 @@
+import 'package:Bookstore/Model/File.dart';
+
 class Book {
   final int id;
   final String? name;
   final String? author;
   final String? description;
+  final File? file;
   final double cost;
   Book(
       this.id,
       this.name,
       this.author,
       this.description,
-      this.cost
+      this.cost,
+      this.file
       );
 
   factory Book.fromJson(Map<String, dynamic> data){
@@ -18,15 +22,8 @@ class Book {
         data['name'],
         data['author'],
         data['description'],
-        data['cost']
+        data['cost'],
+        File.fromJson(data['file'])
     );
   }
-
-  Map toJson() => {
-    "id": id,
-    "name": name,
-    "author": author,
-    "description": description,
-    "cost": cost
-  };
 }

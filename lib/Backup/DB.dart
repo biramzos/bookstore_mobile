@@ -24,7 +24,7 @@ class DB{
 
   static initDB() async{
       Directory documentDirectory = await getApplicationDocumentsDirectory();
-      String path = join(documentDirectory.path, "ba.db");
+      String path = join(documentDirectory.path, "backup.db");
       var ourDb = await openDatabase(path, version: 1, onCreate: onCreate);
       return ourDb;
   }

@@ -19,6 +19,11 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  List<Locale> options = const [
+    Locale('en', 'US'),
+    Locale('ru', 'RU'),
+    Locale('kk', 'KZ')
+  ];
   late String firstname, lastname, email, username, password;
   File? image;
   String? message = "";
@@ -28,8 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
         .then((value) => {
         Navigator.push(context,
           MaterialPageRoute(
-              builder: (context) =>
-                  MainPage(data: value!)
+              builder: (context) => const LoginPage()
           ),
         )
     });
@@ -151,8 +155,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                 children: [
                   TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter first name',
+                    decoration: InputDecoration(
+                      hintText: 'enter_name'.tr(),
                     ),
                     onChanged: (value) => firstname = value,
                     enableSuggestions: false,
@@ -162,8 +166,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter last name',
+                    decoration: InputDecoration(
+                      hintText: 'enter_surname'.tr(),
                     ),
                     onChanged: (value) => lastname = value,
                     enableSuggestions: false,
@@ -173,8 +177,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter email',
+                    decoration: InputDecoration(
+                      hintText: 'enter_email'.tr(),
                     ),
                     onChanged: (value) => email = value,
                     enableSuggestions: false,
@@ -184,8 +188,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter username',
+                    decoration: InputDecoration(
+                      hintText: 'enter_username'.tr(),
                     ),
                     onChanged: (value) => username = value,
                     enableSuggestions: false,
@@ -195,8 +199,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter password',
+                    decoration: InputDecoration(
+                      hintText: 'enter_password'.tr(),
                     ),
                     onChanged: (value) => password = value,
                     obscureText: true,
@@ -206,14 +210,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       return (value!.length > 5) ? (null) : ('Password is incorrect!');
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextButton(
                       onPressed: () => _showImageSourceModal(context),
-                      child: const Text(
-                          "Image",
-                        style: TextStyle(
+                      child: Text(
+                          "image_pick".tr(),
+                        style: const TextStyle(
                           color: Colors.green,
                           fontSize: 18
                         ),
@@ -260,9 +264,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     MaterialPageRoute(
                         builder: (context) => const LoginPage() ));
                 },
-                child: const Text(
-                    "Already have an account?",
-                  style: TextStyle(
+                child: Text(
+                    "already_have_an_account".tr(),
+                  style: const TextStyle(
                     fontSize: 16
                   ),
                 ),
@@ -270,11 +274,34 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(
               height: 30,
             ),
-            Text(
-              message!,
-              style: const TextStyle(
-                  color: Colors.red
-              ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                    '${'language'.tr()}:'
+                ),
+                const SizedBox(
+                  width: 30,
+                ),
+                DropdownButton(
+                  value: context.locale.languageCode,
+                  items: options.map((Locale locale) {
+                    return DropdownMenuItem<String>(
+                      value: locale.languageCode,
+                      child: Text(locale.languageCode.tr(),),
+                    );
+                  }).toList(),
+                  onChanged: (lanCode) {
+                    Locale? locale = options.where((element) => (element.languageCode == lanCode)).first;
+                    setState(() {
+                      context.setLocale(locale);
+                    });
+                  },
+                )
+              ],
             ),
           ],
         ),

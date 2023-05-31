@@ -1,4 +1,5 @@
 import 'package:Bookstore/APIs/UserService.dart';
+import 'package:Bookstore/Pages/MainPage/PreviewPage/PreviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -47,7 +48,11 @@ class _BookPageState extends State<BookPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(desc == null){
+    getData();
+    setState(() {
+      checker = basket!.books!.where((element) => (element.id == widget.book.id)).isNotEmpty;
+    });
+    if(desc == null || basket == null){
       return Scaffold(
         body: Container(
           color: Colors.white,
@@ -195,6 +200,47 @@ class _BookPageState extends State<BookPage> {
                           ),
                           const SizedBox(
                             height: 10,
+                          ),
+                          Text(
+                            "publisher".tr(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              // ClipRRect(
+                              //     borderRadius: const BorderRadius.all(
+                              //         Radius.elliptical(
+                              //             250, 250
+                              //         )
+                              //     ),
+                              //     child: Image.network(
+                              //       UserService.linkToImage()!,
+                              //       headers: {
+                              //         "Authorization":"Bearer ${widget.data.token!}"
+                              //       },
+                              //       width: 30,
+                              //     )
+                              // ),
+                            ],
+                          ),
+                          TextButton(
+                              onPressed: (){
+                                Navigator.push(
+                                    context, 
+                                    MaterialPageRoute(builder: (context) => PreviewPage(book: widget.book, user: widget.user,))
+                                );
+                              }, 
+                              child: Container(
+                                child: Text(
+                                  "preview".tr()
+                                ),
+                              )
                           ),
                           const SizedBox(
                             height: 10,
