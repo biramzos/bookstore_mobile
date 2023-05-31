@@ -149,28 +149,37 @@ class _SearchPageState extends State<SearchPage> {
                 left: 10,
                 right: 10,
               ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 360,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "${"search".tr()}...",
-                      ),
-                      onChanged: (value){
-                        _search(value);
-                      },
-                      autocorrect: false,
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: (){
-                        _openFilterModal(context);
-                      },
-                      icon: const Icon(Icons.filter_list)
-                  )
-                ]
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "${"search".tr()}...",
+                ),
+                onChanged: (value){
+                  _search(value);
+                },
+                autocorrect: false,
               ),
+              // child: Row(
+              //   children: [
+              //     Container(
+              //       //width: 500,
+              //       child: TextFormField(
+              //         decoration: InputDecoration(
+              //           hintText: "${"search".tr()}...",
+              //         ),
+              //         onChanged: (value){
+              //           _search(value);
+              //         },
+              //         autocorrect: false,
+              //       ),
+              //     ),
+              //     IconButton(
+              //         onPressed: (){
+              //           _openFilterModal(context);
+              //         },
+              //         icon: const Icon(Icons.filter_list)
+              //     )
+              //   ]
+              // ),
             ),
             ListView.builder(
                 itemCount: founded.length,
