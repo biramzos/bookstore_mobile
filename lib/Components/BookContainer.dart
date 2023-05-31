@@ -1,5 +1,7 @@
 import 'package:Bookstore/APIs/BookService.dart';
+import 'package:Bookstore/APIs/SellerService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
+import 'package:Bookstore/Model/Seller.dart';
 import 'package:flutter/material.dart';
 import '../Model/Book.dart';
 import '../Model/User.dart';
@@ -18,13 +20,44 @@ class BookContainer extends StatefulWidget {
 
 class BookContainerState extends State<BookContainer>{
 
+  Seller? seller;
+  bool? data;
+
+  getInit() async {
+    data = await UserService.checkFavourites(widget.user.token, widget.book.id);
+    await SellerService.getSellerByBook(widget.book.id, widget.user.token).then(
+            (value) => setState((){
+          seller = value!;
+        })
+    );
+  }
+
+  @override
+  void initState() {
+    getInit();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool? data;
-    getInit() async {
-      data = await UserService.checkFavourites(widget.user.token, widget.book.id);
+    if(seller == null || data == null){
+      return const Card(
+        margin: const EdgeInsets.symmetric(
+            vertical: 5,
+            horizontal: 10
+        ),
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(
+            color: Colors.green,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        shadowColor: Colors.black87,
+        child: const Center(
+            child: const CircularProgressIndicator()
+        ),
+      );
     }
-    getInit();
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -32,7 +65,7 @@ class BookContainerState extends State<BookContainer>{
             MaterialPageRoute(
                 builder: (context) =>
                     BookPage(
-                        user: widget.user, book: widget.book, liked: data!)
+                        user: widget.user, book: widget.book, liked: data!, seller: seller!)
             )
         );
       },

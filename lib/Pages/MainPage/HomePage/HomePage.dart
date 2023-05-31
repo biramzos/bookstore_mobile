@@ -18,8 +18,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  UserService userService = UserService();
-  List<Book> books = [];
+
+  List<Book>? books;
 
   @override
   void initState() {
@@ -28,25 +28,111 @@ class _HomePageState extends State<HomePage> {
   }
 
   getData() async {
-    var response = await BookService.getBooks();
-    setState(() {
-      books.addAll(response);
-    });
+    await BookService.getBooks().then((value) => setState((){
+      books = value;
+    })).onError((error, stackTrace) => null);
   }
 
   @override
   Widget build(BuildContext context) {
+    const IconData book = IconData(0xf02d, fontFamily: "MyFlutterApp", fontPackage: null);
+    if(books == null){
+      return Scaffold(
+        body: Container(
+          color: Colors.white,
+          child: Center(
+            child: Image.asset(
+              'assets/images/loader.gif',
+              width: 200,
+              height: 200,
+            ),
+          ),
+        ),
+      );
+    }
     return Scaffold(
       body: Center(
-        child: ListView.builder(
-          itemCount: books.length,
-          itemBuilder: (BuildContext context, int index) {
-            return BookContainer(
-                book: books[index],
-                user: widget.data,
-            );},
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              children: const [
+                SizedBox(
+                  width: 100,
+                ),
+                Icon(
+                  book,
+                  size: 50,
+                  color: Colors.green,
+                ),
+                Text(
+                  'QazaqBooks',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30
+                  ),
+                )
+              ],
+            ),
+            Container(
+              height: 300,
+              alignment: Alignment.center,
+              child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    '${"welcome_to_app".tr()} ${widget.data.fullname}!',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+              ),
+            ),
+            const Divider(),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+                'collection'.tr(),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.5 * 0.3,
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                    itemCount: books!.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      return BookContainer(
+                          book: books![index],
+                          user: widget.data,
+                      );},
+                  ),
+            ),
+            const Divider()
+          ],
         ),
       ),
+      // body: Center(
+      //   child: ListView.builder(
+      //     itemCount: books!.length,
+      //     itemBuilder: (BuildContext context, int index) {
+      //       return BookContainer(
+      //           book: books![index],
+      //           user: widget.data,
+      //       );},
+      //   ),
+      // ),
     );
   }
 }

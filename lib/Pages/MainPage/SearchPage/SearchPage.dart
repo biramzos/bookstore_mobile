@@ -18,15 +18,15 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   BookService bookService = BookService();
   UserService userService = UserService();
-  List<Book> books = [];
+  List<Book>? books;
   List<Book> founded = [];
   String searchTerm = "";
-  List<String> options = [
-    'Study',
-    'Classic',
-    'Horror'
-  ];
-  List<String> selectedItems = [];
+  // List<String> options = [
+  //   'Study',
+  //   'Classic',
+  //   'Horror'
+  // ];
+  // List<String> selectedItems = [];
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
   getData() async {
     var response = await BookService.getBooks();
     setState(() {
-      books.addAll(response);
+      books = response;
       _search("");
     });
   }
@@ -46,87 +46,87 @@ class _SearchPageState extends State<SearchPage> {
     founded = [];
     if(searchTerm.isEmpty){
       setState(() {
-        founded.addAll(books);
+        founded.addAll(books!);
       });
     } else {
-      for(var i = 0; i < books.length; i++){
+      for(var i = 0; i < books!.length; i++){
         setState(() {
-          if (books[i].name!.toLowerCase().contains(searchTerm.toLowerCase())) {
-            founded.add(books[i]);
-          } else if (books[i].author!.toLowerCase().contains(searchTerm.toLowerCase())) {
-            founded.add(books[i]);
+          if (books![i].name!.toLowerCase().contains(searchTerm.toLowerCase())) {
+            founded.add(books![i]);
+          } else if (books![i].author!.toLowerCase().contains(searchTerm.toLowerCase())) {
+            founded.add(books![i]);
           }
         });
       }
     }
   }
 
-  void _openFilterModal(BuildContext context) async {
-    final selectedOptions = await showModalBottomSheet<List<String>>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'Select Filters',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: options.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final option = options[index];
-                      final isSelected = selectedItems.contains(option);
-                      return CheckboxListTile(
-                        title: Text(option),
-                        value: isSelected,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            if (value!) {
-                              selectedItems.add(option);
-                            } else {
-                              selectedItems.remove(option);
-                            }
-                          });
-                        },
-                      );
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(selectedItems);
-                    },
-                    child: Text('Apply Filters'),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-
-    if (selectedOptions != null) {
-      setState(() {
-        selectedItems = selectedOptions;
-      });
-    }
-  }
+  // void _openFilterModal(BuildContext context) async {
+  //   final selectedOptions = await showModalBottomSheet<List<String>>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return StatefulBuilder(
+  //         builder: (BuildContext context, StateSetter setState) {
+  //           return Container(
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Padding(
+  //                   padding: const EdgeInsets.all(16.0),
+  //                   child: Text(
+  //                     'Select Filters',
+  //                     style: TextStyle(
+  //                       fontWeight: FontWeight.bold,
+  //                       fontSize: 18,
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 ListView.builder(
+  //                   shrinkWrap: true,
+  //                   itemCount: options.length,
+  //                   itemBuilder: (BuildContext context, int index) {
+  //                     final option = options[index];
+  //                     final isSelected = selectedItems.contains(option);
+  //                     return CheckboxListTile(
+  //                       title: Text(option),
+  //                       value: isSelected,
+  //                       onChanged: (bool? value) {
+  //                         setState(() {
+  //                           if (value!) {
+  //                             selectedItems.add(option);
+  //                           } else {
+  //                             selectedItems.remove(option);
+  //                           }
+  //                         });
+  //                       },
+  //                     );
+  //                   },
+  //                 ),
+  //                 SizedBox(height: 16),
+  //                 ElevatedButton(
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop(selectedItems);
+  //                   },
+  //                   child: Text('Apply Filters'),
+  //                 ),
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  //
+  //   if (selectedOptions != null) {
+  //     setState(() {
+  //       selectedItems = selectedOptions;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    if(books.isEmpty){
+    if(books == null){
       return Scaffold(
         body: Container(
           color: Colors.white,

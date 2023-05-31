@@ -81,7 +81,7 @@ class _ChatsPageState extends State<ChatsPage> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          getUsers();
+          await getUsers();
         },
         child: Center(
           child: ListView.builder(

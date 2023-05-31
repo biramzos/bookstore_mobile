@@ -26,14 +26,14 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
 
   List<Message>? messages;
-  String? message;
+  String? content;
   StompClient? client;
 
   @override
   void initState() {
-    super.initState();
     getData();
     connectToServer();
+    super.initState();
   }
 
   getData() async{
@@ -49,11 +49,6 @@ class _ChatPageState extends State<ChatPage> {
         config: StompConfig.SockJS(
             url: '${dotenv.env['URL']}/chat',
             onConnect: onConnect,
-            beforeConnect: () async {
-              print('waiting to connect...');
-              await Future.delayed(const Duration(milliseconds: 200));
-              print('connecting...');
-            },
             onWebSocketError: (dynamic error) => print(error.toString())
         )
     );
@@ -64,32 +59,38 @@ class _ChatPageState extends State<ChatPage> {
     print('Connected to server');
     client!
         .subscribe(
-        destination: '/queue/messages',
-        headers: {
-          'Content-Type':'application/json',
-          'Access-Control-Allow-Origin':'*',
-          "Authorization":"Bearer ${widget.currentUser.token}"
-        },
+        destination: '/user/queue/messages',
         callback: (frame) {
           if (frame.body != null) {
             Map<String, dynamic> result = json.decode(frame.body!);
-            messages!.add(Message.fromJson(result));
+            setState(() {
+              messages!.add(Message.fromJson(result));
+            });
+            print(jsonEncode(result));
           }
         });
   }
 
   void sendMessage(String message) {
-    String formattedDateTime = DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now());
-    var m = jsonEncode({
+    var date = DateTime.now();
+    var dateYear = '${date.year}';
+    var dateMonth = (date.month >= 10) ? '${date.month}' : '0${date.month}';
+    var dateDay = (date.day >= 10) ? '${date.day}' : '0${date.day}';
+    var dateHour = (date.hour >= 10) ? '${date.hour}' : '0${date.hour}';
+    var dateMinute = (date.minute >= 10) ? '${date.minute}' : '0${date.minute}';
+    String formattedDateTime = '$dateYear-$dateMonth-${dateDay}T$dateHour:$dateMinute';
+    var m = {
       'sender': widget.currentUser.username,
       'content': message,
-      'receiver': widget.user.username,
-      'time': formattedDateTime
-    });
+      'receiver': widget.user.username
+    };
     client!.send(
       destination: '/app/chat',
-      body: m,
+      body: jsonEncode(m),
     );
+    setState(() {
+      messages!.add(Message(widget.currentUser.username!, message, widget.user.username!, formattedDateTime));
+    });
   }
 
   @override
@@ -98,50 +99,112 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
+  void deactivateClient() {
+    client!.deactivate();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(widget.user.username!),
-          backgroundColor: Colors.green,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: messages!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return MessageContainer(message: messages![index], isMe: (messages![index].sender! == widget.currentUser.username!),);
-                  }
-              ),
-            ),
-            const Divider(),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: "type_a_message".tr()
+    if(messages == null){
+      return WillPopScope(
+        onWillPop: () async {
+          deactivateClient();
+          Navigator.pop(context);
+          return true;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(widget.user.username!),
+            backgroundColor: Colors.green,
+          ),
+          body: SafeArea(
+            child: Column(
+              children: [
+                const Expanded(
+                  child: CircularProgressIndicator()
+                ),
+                const Divider(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                              hintText: "type_a_message".tr()
+                          ),
+                          onChanged: (value){
+                            content = value;
+                            value = "";
+                          },
+                        ),
                       ),
-                      onChanged: (value){
-                        message = value;
+                      IconButton(
+                        icon: const Icon(Icons.send, color: Colors.green,),
+                        onPressed: () {
+                          sendMessage(content!);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    return WillPopScope(
+      onWillPop: () async {
+        deactivateClient();
+        Navigator.pop(context);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+            title: Text(widget.user.username!),
+            backgroundColor: Colors.green,
+
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    itemCount: messages!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MessageContainer(message: messages![index], isMe: (messages![index].sender! == widget.currentUser.username!),);
+                    }
+                ),
+              ),
+              const Divider(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        initialValue: content,
+                        decoration: InputDecoration(
+                            hintText: "type_a_message".tr()
+                        ),
+                        onChanged: (value){
+                          content = value;
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.send, color: Colors.green,),
+                      onPressed: () {
+                        sendMessage(content!);
                       },
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.send, color: Colors.green,),
-                    onPressed: () {
-                      sendMessage(message!);
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

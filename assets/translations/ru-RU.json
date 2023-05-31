@@ -46,4 +46,7 @@
   "success": "Успех!",
   "cancel": "Отменен!",
   "there_is_status_error": "Статус не успешен!",
+  "publisher": "Продавец",
+  "welcome_to_app": "Добро пожаловать в QazaqBooks,",
+  "collection": "Наши коллекции книг"
 }

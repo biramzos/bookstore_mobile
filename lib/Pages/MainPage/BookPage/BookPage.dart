@@ -1,5 +1,8 @@
+import 'package:Bookstore/APIs/SellerService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
+import 'package:Bookstore/Model/Seller.dart';
 import 'package:Bookstore/Pages/MainPage/PreviewPage/PreviewPage.dart';
+import 'package:Bookstore/Pages/MainPage/SellerPage/SellerPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,7 +17,8 @@ class BookPage extends StatefulWidget {
   final Book book;
   final User user;
   final bool liked;
-  const BookPage({Key? key, required this.user, required this.book, required this.liked}) : super(key: key);
+  final Seller seller;
+  const BookPage({Key? key, required this.user, required this.book, required this.liked, required this.seller}) : super(key: key);
 
   @override
   State<BookPage> createState() => _BookPageState();
@@ -23,7 +27,7 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   bool? liked;
   Basket? basket;
-  bool checker = false;
+  bool? checker;
   String? desc;
 
   @override
@@ -39,20 +43,21 @@ class _BookPageState extends State<BookPage> {
     await BasketService.getCurrentBasket(widget.user.token).then(
             (value) => (setState((){
               basket = value;
-            })));
+            }))
+    ).onError((error, stackTrace) => null);
     await widget.book.description!.translate(to: context.locale.languageCode).then((value) => setState((){
       desc = value.text;
-    }));
+    })).onError((error, stackTrace) => null);
+    setState(() {
+      checker = basket!.books!.where((element) => (element.id == widget.book.id)).isNotEmpty;
+    });
   }
 
 
   @override
   Widget build(BuildContext context) {
     getData();
-    setState(() {
-      checker = basket!.books!.where((element) => (element.id == widget.book.id)).isNotEmpty;
-    });
-    if(desc == null || basket == null){
+    if(desc == null || basket == null || checker == null){
       return Scaffold(
         body: Container(
           color: Colors.white,
@@ -199,7 +204,7 @@ class _BookPageState extends State<BookPage> {
                             '$desc',
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 20,
                           ),
                           Text(
                             "publisher".tr(),
@@ -211,23 +216,47 @@ class _BookPageState extends State<BookPage> {
                           const SizedBox(
                             height: 10,
                           ),
-                          Row(
-                            children: [
-                              // ClipRRect(
-                              //     borderRadius: const BorderRadius.all(
-                              //         Radius.elliptical(
-                              //             250, 250
-                              //         )
-                              //     ),
-                              //     child: Image.network(
-                              //       UserService.linkToImage()!,
-                              //       headers: {
-                              //         "Authorization":"Bearer ${widget.data.token!}"
-                              //       },
-                              //       width: 30,
-                              //     )
-                              // ),
-                            ],
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SellerPage(currentUser: widget.user, seller: widget.seller,))
+                              );
+                            },
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.elliptical(
+                                                250, 250
+                                            )
+                                        ),
+                                        child: Image.network(
+                                          UserService.linkToImage(widget.seller.seller!.id)!,
+                                          width: 40,
+                                        )
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      widget.seller.name!,
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w800
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
                           ),
                           TextButton(
                               onPressed: (){
@@ -245,7 +274,7 @@ class _BookPageState extends State<BookPage> {
                           const SizedBox(
                             height: 10,
                           ),
-                          (checker)
+                          (checker!)
                               ? TextButton(
                               onPressed: (){
                                 setState(() {

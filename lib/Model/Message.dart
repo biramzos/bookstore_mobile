@@ -15,9 +15,9 @@ class Message{
 
   factory Message.fromJson(Map<String, dynamic> data){
     return Message(
-        data['sender']['username'],
+        User.fromJson(data['sender']).username,
         data['content'],
-        data['receiver']['username'],
+        User.fromJson(data['receiver']).username,
         data['time']
     );
   }

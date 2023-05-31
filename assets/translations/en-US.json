@@ -46,5 +46,8 @@
   "success": "Success!",
   "cancel": "Cancel!",
   "there_is_status_error": "Status is not success!",
-  "cost": "Total"
+  "cost": "Total",
+  "publisher": "Seller",
+  "welcome_to_app": "Welcome to the QazaqBooks,",
+  "collection": "Our collections of books"
 }
