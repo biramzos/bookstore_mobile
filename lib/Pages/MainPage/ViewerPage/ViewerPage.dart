@@ -68,7 +68,7 @@ class _ViewerPageState extends State<ViewerPage> {
         backgroundColor: Colors.green,
       ),
       body: SfPdfViewer.file(
-        file!
+          file!
       ),
     );
   }

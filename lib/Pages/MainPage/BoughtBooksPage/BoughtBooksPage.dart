@@ -1,40 +1,41 @@
 import 'package:Bookstore/APIs/BasketService.dart';
-import 'package:Bookstore/Components/BillContainer.dart';
+import 'package:Bookstore/Components/BoughtBookContainer.dart';
 import 'package:Bookstore/Model/Bill.dart';
+import 'package:Bookstore/Model/Book.dart';
 import 'package:Bookstore/Model/User.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-class BoughtPage extends StatefulWidget {
+class BoughtBooksPage extends StatefulWidget {
+  final Bill bill;
   final User user;
-  const BoughtPage({Key? key, required this.user}) : super(key: key);
+  const BoughtBooksPage({Key? key, required this.bill, required this.user}) : super(key: key);
 
   @override
-  State<BoughtPage> createState() => _BoughtPageState();
+  State<BoughtBooksPage> createState() => _BoughtBooksPageState();
 }
 
-class _BoughtPageState extends State<BoughtPage> {
+class _BoughtBooksPageState extends State<BoughtBooksPage> {
 
-  List<Bill>? boughts;
+  List<Book>? books;
 
-  getBought() async{
-    await BasketService.getAllBillsOfUser(widget.user.token).then(
+  getBooks() async{
+    await BasketService.getAllBooksInBills(widget.bill.id, widget.user.token).then(
             (value) => setState((){
-              boughts = value;
-            })
+          books = value;
+        })
     );
   }
 
   @override
   void initState() {
-    getBought();
+    getBooks();
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    if(boughts == null) {
+    if(books == null){
       return Scaffold(
         body: Container(
           color: Colors.white,
@@ -47,18 +48,17 @@ class _BoughtPageState extends State<BoughtPage> {
           ),
         ),
       );
-    }
-    else if(boughts!.isEmpty){
+    }else if(widget.bill.status != "success"){
       return Scaffold(
         body: RefreshIndicator(
           onRefresh: () async {
-            await getBought();
+            await getBooks();
           },
           child: Container(
             color: Colors.white,
             child: Center(
                 child: Text(
-                  "there_is_no_bills".tr(),
+                  "there_is_status_error".tr(),
                   style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 30
@@ -77,17 +77,17 @@ class _BoughtPageState extends State<BoughtPage> {
       body: Center(
         child: RefreshIndicator(
           onRefresh: () async {
-            await getBought();
+            await getBooks();
           },
           child: ListView.builder(
-            itemCount: boughts!.length,
+            itemCount: books!.length,
             itemBuilder: (BuildContext context, int index) {
-              return BillContainer(
-                  bill: boughts![index],
+              return BoughtBookContainer(
                   user: widget.user,
+                  book: books![index]
               );},
           ),
-        )
+        ),
       ),
     );
   }

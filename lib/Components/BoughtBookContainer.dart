@@ -1,6 +1,6 @@
 import 'package:Bookstore/APIs/BookService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
-import 'package:Bookstore/Pages/ViewerPage/ViewerPage.dart';
+import 'package:Bookstore/Pages/MainPage/ViewerPage/ViewerPage.dart';
 import 'package:flutter/material.dart';
 import '../Model/Book.dart';
 import '../Model/User.dart';

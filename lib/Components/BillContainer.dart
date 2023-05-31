@@ -1,6 +1,6 @@
 import 'package:Bookstore/Model/Bill.dart';
 import 'package:Bookstore/Model/User.dart';
-import 'package:Bookstore/Pages/BoughtBooksPage/BoughtBooksPage.dart';
+import 'package:Bookstore/Pages/MainPage/BoughtBooksPage/BoughtBooksPage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 

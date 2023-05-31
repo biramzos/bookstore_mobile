@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:Bookstore/APIs/UserService.dart';
 import 'package:Bookstore/Backup/DB.dart';
 import 'package:Bookstore/Components/SplashScreen.dart';
-import 'package:Bookstore/Pages/BoughtPage/BoughtPage.dart';
+import 'package:Bookstore/Pages/MainPage/BoughtPage/BoughtPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../Model/User.dart';
