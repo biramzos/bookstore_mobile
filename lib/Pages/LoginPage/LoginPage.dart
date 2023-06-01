@@ -1,5 +1,6 @@
 // ignore_for_file: argument_type_not_assignable_to_error_handler
 
+import 'package:Bookstore/Pages/ForgetPasswordPage/ForgetPasswordPage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -168,7 +169,10 @@ class _LoginPageState extends State<LoginPage> {
               ),
               GestureDetector(
                 onTap: () {
-
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ForgetPasswordPage())
+                  );
                 },
                 child: Text(
                   "forget_password".tr(),
