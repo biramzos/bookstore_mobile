@@ -67,8 +67,9 @@ dev_dependencies:
   image_cropper: any
 
 
+
 flutter_launcher_name:
-  name: Bookstore
+  name: QazaqBooks
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

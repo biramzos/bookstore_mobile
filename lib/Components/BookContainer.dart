@@ -9,55 +9,14 @@ import '../Pages/MainPage/BookPage/BookPage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:translator/translator.dart';
 
-class BookContainer extends StatefulWidget {
+class BookContainer extends StatelessWidget {
   final Book book;
   final User user;
   const BookContainer({Key? key, required this.user, required this.book}) : super(key: key);
 
-  @override
-  State<BookContainer> createState() => BookContainerState();
-}
-
-class BookContainerState extends State<BookContainer>{
-
-  Seller? seller;
-  bool? data;
-
-  getInit() async {
-    data = await UserService.checkFavourites(widget.user.token, widget.book.id);
-    await SellerService.getSellerByBook(widget.book.id, widget.user.token).then(
-            (value) => setState((){
-          seller = value!;
-        })
-    );
-  }
-
-  @override
-  void initState() {
-    getInit();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    if(seller == null || data == null){
-      return const Card(
-        margin: const EdgeInsets.symmetric(
-            vertical: 5,
-            horizontal: 10
-        ),
-        shape: const RoundedRectangleBorder(
-          side: BorderSide(
-            color: Colors.green,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        shadowColor: Colors.black87,
-        child: const Center(
-            child: const CircularProgressIndicator()
-        ),
-      );
-    }
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -65,7 +24,7 @@ class BookContainerState extends State<BookContainer>{
             MaterialPageRoute(
                 builder: (context) =>
                     BookPage(
-                        user: widget.user, book: widget.book, liked: data!, seller: seller!)
+                        user: user, book: book)
             )
         );
       },
@@ -91,7 +50,7 @@ class BookContainerState extends State<BookContainer>{
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Image.network(
-                    BookService.getPreviewLinkById(widget.book.id),
+                    BookService.getPreviewLinkById(book.id),
                     width: 70,
                   ),
                 ),
@@ -104,7 +63,7 @@ class BookContainerState extends State<BookContainer>{
                     child: Column(
                       children: [
                         Text(
-                          '${widget.book.name}',
+                          '${book.name}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 17,
@@ -116,7 +75,7 @@ class BookContainerState extends State<BookContainer>{
                         ),
                         const SizedBox(height: 10,),
                         Text(
-                          '${widget.book.author}',
+                          '${book.author}',
                           style: const TextStyle(
                               fontSize: 16
                           ),
@@ -126,7 +85,7 @@ class BookContainerState extends State<BookContainer>{
                         ),
                         const SizedBox(height: 10,),
                         Text(
-                          "${widget.book.cost.toInt()} ₸",
+                          "${book.cost.toInt()} ₸",
                           softWrap: false,
                           maxLines: 2,
                           style: const TextStyle(

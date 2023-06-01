@@ -89,7 +89,7 @@ class _BasketPageState extends State<BasketPage> {
   createPaymentIntent() async {
     try {
       var response = await Dio().post(
-        'http://localhost:8000/api/v1/baskets/${basket!.id}/create-customer-id',
+        'http://localhost:8090/api/v1/baskets/${basket!.id}/create-customer-id',
         options: Options(
           headers: {
             "Authorization":"Bearer ${widget.data.token!}"

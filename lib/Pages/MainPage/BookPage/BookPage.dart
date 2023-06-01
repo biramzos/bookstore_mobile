@@ -16,27 +16,39 @@ import '../../../Model/Basket.dart';
 class BookPage extends StatefulWidget {
   final Book book;
   final User user;
-  final bool liked;
-  final Seller seller;
-  const BookPage({Key? key, required this.user, required this.book, required this.liked, required this.seller}) : super(key: key);
+  const BookPage({Key? key, required this.user, required this.book,}) : super(key: key);
 
   @override
   State<BookPage> createState() => _BookPageState();
 }
 
 class _BookPageState extends State<BookPage> {
-  bool? liked;
   Basket? basket;
   bool? checker;
   String? desc;
+  bool? isLiked;
+  Seller? seller;
 
   @override
   void initState() {
+    getInit();
     getData();
-    setState(() {
-      liked = widget.liked;
-    });
     super.initState();
+  }
+
+  getInit() async {
+    await UserService.checkFavourites(widget.user.token, widget.book.id)
+        .then(
+            (value) => setState((){
+              isLiked = value;
+            })
+    );
+    await SellerService.getSellerByBook(widget.book.id, widget.user.token)
+        .then(
+            (value) => setState(() {
+                seller = value!;
+              })
+      );
   }
 
   getData() async {
@@ -57,7 +69,7 @@ class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
     getData();
-    if(desc == null || basket == null || checker == null){
+    if(desc == null || basket == null || checker == null || isLiked == null || seller == null){
       return Scaffold(
         body: Container(
           color: Colors.white,
@@ -158,7 +170,7 @@ class _BookPageState extends State<BookPage> {
                               const SizedBox(
                                 width: 20,
                               ),
-                              (liked! == true)
+                              (isLiked!)
                                   ? IconButton(
                                 icon: const Icon(
                                     Icons.favorite_outline_rounded,
@@ -168,7 +180,7 @@ class _BookPageState extends State<BookPage> {
                                 onPressed: (){
                                   setState(() {
                                     UserService.removeFavourites(widget.user.token, widget.book.id);
-                                    liked = false;
+                                    isLiked = false;
                                   });
                                 },
                               )
@@ -181,7 +193,7 @@ class _BookPageState extends State<BookPage> {
                                 onPressed: (){
                                   setState(() {
                                     UserService.addFavourites(widget.user.token, widget.book.id);
-                                    liked = true;
+                                    isLiked = true;
                                   });
                                 },
                               ),
@@ -221,7 +233,7 @@ class _BookPageState extends State<BookPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => SellerPage(currentUser: widget.user, seller: widget.seller,))
+                                      builder: (context) => SellerPage(currentUser: widget.user, seller: seller!,))
                               );
                             },
                             child: Card(
@@ -236,7 +248,7 @@ class _BookPageState extends State<BookPage> {
                                             )
                                         ),
                                         child: Image.network(
-                                          UserService.linkToImage(widget.seller.seller!.id)!,
+                                          UserService.linkToImage(seller!.seller!.id)!,
                                           width: 40,
                                         )
                                     ),
@@ -244,7 +256,7 @@ class _BookPageState extends State<BookPage> {
                                       width: 10,
                                     ),
                                     Text(
-                                      widget.seller.name!,
+                                      seller!.name!,
                                       style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w800
