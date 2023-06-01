@@ -71,7 +71,7 @@ class _BoughtPageState extends State<BoughtPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('QazaqBooks'),
+        title: Text('bills'.tr()),
         backgroundColor: Colors.green,
       ),
       body: Center(

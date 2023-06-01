@@ -49,5 +49,8 @@
   "cost": "Total",
   "publisher": "Seller",
   "welcome_to_app": "Welcome to the QazaqBooks,",
-  "collection": "Our collections of books"
+  "collection": "Our collections of books",
+  "send": "Send",
+  "bill": "Order",
+  "chats_seller": "Chats with sellers"
 }

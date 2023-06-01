@@ -48,5 +48,8 @@
   "there_is_status_error": "Статус не успешен!",
   "publisher": "Продавец",
   "welcome_to_app": "Добро пожаловать в QazaqBooks,",
-  "collection": "Наши коллекции книг"
+  "collection": "Наши коллекции книг",
+  "send": "Отправить",
+  "bill": "Заказ",
+  "chats_seller": "Чаты с продавцами"
 }

@@ -1,4 +1,5 @@
 import 'package:Bookstore/APIs/MessageService.dart';
+import 'package:Bookstore/Components/UserContainer.dart';
 import 'package:Bookstore/Model/User.dart';
 import 'package:Bookstore/Pages/MainPage/ChatPage/ChatPage.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -76,7 +77,7 @@ class _ChatsPageState extends State<ChatsPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('QazaqBooks'),
+        title: Text('chats_seller'.tr()),
         backgroundColor: Colors.green,
       ),
       body: RefreshIndicator(
@@ -87,13 +88,12 @@ class _ChatsPageState extends State<ChatsPage> {
           child: ListView.builder(
             itemCount: users!.length,
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text(users![index].username!),
+              return UserContainer(
+                user: users![index],
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(user: users![index], currentUser: widget.user,)));
                 },
-              );
-              },
+              );},
           ),
         ),
       ),

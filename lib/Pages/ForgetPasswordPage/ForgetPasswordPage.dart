@@ -50,17 +50,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 ],
               ),
               const SizedBox(
-                height: 100,
-              ),
-              Text(
-                tr('sign_in'),
-                style: const TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold
-                ),
-              ),
-              const SizedBox(
-                height: 40,
+                height: 140,
               ),
               Padding(
                 padding: const EdgeInsets.only(

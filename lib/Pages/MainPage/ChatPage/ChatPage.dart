@@ -121,8 +121,12 @@ class _ChatPageState extends State<ChatPage> {
           body: SafeArea(
             child: Column(
               children: [
-                const Expanded(
-                  child: CircularProgressIndicator()
+                Expanded(
+                  child: Image.asset(
+                    'assets/images/loader.gif',
+                    width: 200,
+                    height: 200,
+                  ),
                 ),
                 const Divider(),
                 Container(
