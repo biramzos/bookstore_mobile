@@ -1,13 +1,9 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:Bookstore/APIs/MessageService.dart';
 import 'package:Bookstore/Components/MessageContainer.dart';
 import 'package:Bookstore/Model/Message.dart';
 import 'package:Bookstore/Model/User.dart';
-import 'package:Bookstore/Pages/MainPage/ChatsPage/ChatsPage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:stomp_dart_client/stomp.dart';
@@ -26,13 +22,15 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
 
   List<Message>? messages;
-  String? content;
   StompClient? client;
+  String? content;
+  TextEditingController? _textEditingController;
 
   @override
   void initState() {
     getData();
     connectToServer();
+    _textEditingController = TextEditingController();
     super.initState();
   }
 
@@ -49,14 +47,14 @@ class _ChatPageState extends State<ChatPage> {
         config: StompConfig.SockJS(
             url: '${dotenv.env['URL']}/chat',
             onConnect: onConnect,
-            onWebSocketError: (dynamic error) => print(error.toString())
+            onWebSocketError: (dynamic error) => debugPrint(error.toString())
         )
     );
     client!.activate();
   }
 
   void onConnect(StompFrame frame) {
-    print('Connected to server');
+    debugPrint('Connected to server');
     client!
         .subscribe(
         destination: '/user/queue/messages',
@@ -66,7 +64,6 @@ class _ChatPageState extends State<ChatPage> {
             setState(() {
               messages!.add(Message.fromJson(result));
             });
-            print(jsonEncode(result));
           }
         });
   }
@@ -96,10 +93,12 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     client!.deactivate();
+    _textEditingController!.dispose();
     super.dispose();
   }
 
   void deactivateClient() {
+    _textEditingController!.dispose();
     client!.deactivate();
   }
 
@@ -138,16 +137,14 @@ class _ChatPageState extends State<ChatPage> {
                           decoration: InputDecoration(
                               hintText: "type_a_message".tr()
                           ),
-                          onChanged: (value){
-                            content = value;
-                            value = "";
-                          },
+                          controller: _textEditingController,
                         ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.send, color: Colors.green,),
                         onPressed: () {
-                          sendMessage(content!);
+                          sendMessage(_textEditingController!.value.text);
+                          _textEditingController!.clear();
                         },
                       ),
                     ],
@@ -188,19 +185,20 @@ class _ChatPageState extends State<ChatPage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextFormField(
-                        initialValue: content,
-                        decoration: InputDecoration(
-                            hintText: "type_a_message".tr()
-                        ),
+                      child: TextField(
                         onChanged: (value){
                           content = value;
                         },
+                        decoration: InputDecoration(
+                            hintText: "type_a_message".tr()
+                        ),
+                        controller: _textEditingController,
                       ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.send, color: Colors.green,),
                       onPressed: () {
+                        _textEditingController!.clear();
                         sendMessage(content!);
                       },
                     ),
