@@ -103,70 +103,84 @@ class _ProfilePageState extends State<ProfilePage> {
             const Divider(
               color: Colors.black,
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BoughtPage(user: widget.data)));
-                },
-                child: Container(
-                  child: Text("bills".tr()),
-                )
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${'language'.tr()}:',
-                  style: const TextStyle(
-                    fontSize: 17
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                DropdownButton(
-                    value: context.locale.languageCode,
-                    items: options.map((Locale locale) {
-                      return DropdownMenuItem<String>(
-                        value: locale.languageCode,
-                        child: Text(locale.languageCode.tr(),),
-                      );
-                    }).toList(),
-                    onChanged: (lanCode) {
-                      Locale? locale = options.where((element) => (element.languageCode == lanCode)).first;
-                      setState(() {
-                        context.setLocale(locale);
-                      });
+            Card(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                    onPressed: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BoughtPage(user: widget.data)));
                     },
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextButton(
-                onPressed: () async {
-                  await DB.deleteAllUser();
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SplashScreen()));
-                },
-                child: Text(
-                    "log_out".tr(),
-                  style: const TextStyle(
-                    color: Colors.green,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700
-                  ),
+                    child: Text(
+                        "bills".tr(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 17,
+                            color: Colors.green
+                        ),
+                      textAlign: TextAlign.start,
+                    )
                 ),
+              ),
+            ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${'language'.tr()}:',
+                      style: const TextStyle(
+                        fontSize: 17
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    DropdownButton(
+                        value: context.locale.languageCode,
+                        items: options.map((Locale locale) {
+                          return DropdownMenuItem<String>(
+                            value: locale.languageCode,
+                            child: Text(locale.languageCode.tr(),),
+                          );
+                        }).toList(),
+                        onChanged: (lanCode) {
+                          Locale? locale = options.where((element) => (element.languageCode == lanCode)).first;
+                          setState(() {
+                            context.setLocale(locale);
+                          });
+                        },
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Card(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                    onPressed: () async {
+                      await DB.deleteAllUser();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SplashScreen()));
+                    },
+                    child: Text(
+                        "log_out".tr(),
+                      style: const TextStyle(
+                        color: Colors.green,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700
+                      ),
+                    ),
+                ),
+              ),
             )
           ],
         ),

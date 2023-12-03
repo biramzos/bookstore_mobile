@@ -58,7 +58,7 @@ class BookContainer extends StatelessWidget {
                   width: 20,
                 ),
                 SizedBox(
-                  width: 290,
+                  width: MediaQuery.of(context).size.width * 0.6,
                   child: Center(
                     child: Column(
                       children: [
@@ -69,7 +69,7 @@ class BookContainer extends StatelessWidget {
                             fontSize: 17,
                           ),
                           softWrap: false,
-                          maxLines: 2,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                         ),

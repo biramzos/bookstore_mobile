@@ -18,6 +18,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   ];
 
   String? username;
+  String message = "";
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               ),
               TextButton(
                 onPressed: () async {
-                  await UserService.forgetPassword(username);
+                  String? response = await UserService.forgetPassword(username);
+                  setState(() {
+                    message = response!;
+                  });
                 },
                 child: Text(
                   "send".tr(),
@@ -95,7 +99,17 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
+              ),
+              Text(
+                '$message',
+                style: const TextStyle(
+                  fontSize: 18
+                ),
+                selectionColor: Colors.red,
+              ),
+              const SizedBox(
+                height: 10,
               ),
               GestureDetector(
                 onTap: () {

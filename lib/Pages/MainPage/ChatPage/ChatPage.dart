@@ -44,7 +44,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void connectToServer() async {
     client = StompClient(
-        config: StompConfig.SockJS(
+        config: StompConfig(
             url: '${dotenv.env['URL']}/chat',
             onConnect: onConnect,
             onWebSocketError: (dynamic error) => debugPrint(error.toString())
@@ -118,40 +118,14 @@ class _ChatPageState extends State<ChatPage> {
             backgroundColor: Colors.green,
           ),
           body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Image.asset(
-                    'assets/images/loader.gif',
-                    width: 200,
-                    height: 200,
-                  ),
-                ),
-                const Divider(),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: "type_a_message".tr()
-                          ),
-                          controller: _textEditingController,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.send, color: Colors.green,),
-                        onPressed: () {
-                          sendMessage(_textEditingController!.value.text);
-                          _textEditingController!.clear();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            child: Container(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/images/loader.gif',
+                width: 200,
+                height: 200,
+              ),
+            )
           ),
         ),
       );

@@ -123,81 +123,84 @@ class _BookPageState extends State<BookPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    width: 300,
-                                    child: Text(
-                                      '${widget.book.name}',
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          fontSize: 21,
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
+                                      width: 300,
+                                      child: Text(
+                                        '${widget.book.name}',
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                        softWrap: false,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      softWrap: false,
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    '${widget.book.author}',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.grey
+                                    const SizedBox(
+                                      height: 10,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    '${widget.book.cost.toInt()} ₸',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.black87
+                                    Text(
+                                      '${widget.book.author}',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              (isLiked!)
-                                  ? IconButton(
-                                icon: const Icon(
-                                    Icons.favorite_outline_rounded,
-                                    size: 50,
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      '${widget.book.cost.toInt()} ₸',
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black87
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                color: Colors.red,
-                                onPressed: (){
-                                  setState(() {
-                                    UserService.removeFavourites(widget.user.token, widget.book.id);
-                                    isLiked = false;
-                                  });
-                                },
-                              )
-                                  : IconButton(
-                                icon: const Icon(
-                                    Icons.favorite_outline_rounded,
-                                    size: 50,
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.1 * 0.1,
                                 ),
-                                color: Colors.black,
-                                onPressed: (){
-                                  setState(() {
-                                    UserService.addFavourites(widget.user.token, widget.book.id);
-                                    isLiked = true;
-                                  });
-                                },
-                              ),
-                            ],
+                                (isLiked!)
+                                    ? IconButton(
+                                        icon: const Icon(
+                                          Icons.favorite_outline_rounded,
+                                          size: 50,
+                                        ),
+                                        color: Colors.red,
+                                        onPressed: (){
+                                          setState(() {
+                                            UserService.removeFavourites(widget.user.token, widget.book.id);
+                                            isLiked = false;
+                                          });
+                                        },
+                                    )
+                                    : IconButton(
+                                      icon: const Icon(
+                                        Icons.favorite_outline_rounded,
+                                        size: 50,
+                                      ),
+                                      color: Colors.black,
+                                      onPressed: (){
+                                        setState(() {
+                                          UserService.addFavourites(widget.user.token, widget.book.id);
+                                          isLiked = true;
+                                        });
+                                      },
+                                    ),
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 30,
@@ -270,41 +273,51 @@ class _BookPageState extends State<BookPage> {
                           const SizedBox(
                             height: 20,
                           ),
-                          TextButton(
-                              onPressed: (){
-                                Navigator.push(
-                                    context, 
-                                    MaterialPageRoute(builder: (context) => PreviewPage(book: widget.book, user: widget.user,))
-                                );
-                              }, 
-                              child: Container(
-                                child: Text(
-                                  "preview".tr()
-                                ),
-                              )
+                          Card(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: TextButton(
+                                  onPressed: (){
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => PreviewPage(book: widget.book, user: widget.user,))
+                                    );
+                                  },
+                                  child: Container(
+                                    child: Text(
+                                      "preview".tr()
+                                    ),
+                                  )
+                              ),
+                            ),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          (checker!)
-                              ? TextButton(
-                              onPressed: (){
-                                setState(() {
-                                  BasketService.removeBookToBasket(basket!.id, widget.book.id, widget.user.token);
-                                  checker = false;
-                                });
-                              },
-                              child: Text("remove_from_basket".tr())
-                            )
-                              : TextButton(
-                              onPressed: (){
-                                setState(() {
-                                  BasketService.addBookToBasket(basket!.id, widget.book.id, widget.user.token);
-                                  checker = true;
-                                });
-                              },
-                              child: Text("add_to_basket".tr())
-                            )
+                          Card(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: (checker!)
+                                  ? TextButton(
+                                      onPressed: (){
+                                        setState(() {
+                                          BasketService.removeBookToBasket(basket!.id, widget.book.id, widget.user.token);
+                                          checker = false;
+                                        });
+                                      },
+                                      child: Text("remove_from_basket".tr())
+                                  )
+                                  : TextButton(
+                                      onPressed: (){
+                                        setState(() {
+                                          BasketService.addBookToBasket(basket!.id, widget.book.id, widget.user.token);
+                                          checker = true;
+                                        });
+                                      },
+                                      child: Text("add_to_basket".tr())
+                                  ),
+                            ),
+                          )
                         ],
                       ),
                     )

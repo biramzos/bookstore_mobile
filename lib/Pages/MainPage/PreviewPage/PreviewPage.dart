@@ -48,6 +48,12 @@ class _PreviewPageState extends State<PreviewPage> {
   }
 
   @override
+  void dispose() {
+    file = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if(file == null){
       return Scaffold(

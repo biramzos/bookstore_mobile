@@ -30,7 +30,7 @@ class UserService {
     return User.fromJson(response.data);
   }
 
-  static Future<void> forgetPassword(username) async{
+  static Future<String?> forgetPassword(username) async{
     var response = await Dio().get(
         '$URL/forget/password?username=$username',
         options: Options(
@@ -40,6 +40,7 @@ class UserService {
             }
         )
     );
+    return response.data;
   }
 
   static Future<User?> authenticate(token) async{

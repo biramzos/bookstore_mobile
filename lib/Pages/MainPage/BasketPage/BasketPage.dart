@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:translator/translator.dart';
 import 'package:Bookstore/APIs/BasketService.dart';
@@ -89,14 +90,15 @@ class _BasketPageState extends State<BasketPage> {
   createPaymentIntent() async {
     try {
       var response = await Dio().post(
-        'http://localhost:8000/api/v1/baskets/${basket!.id}/create-customer-id',
+        '${dotenv.env["URL"]}/api/v1/baskets/${basket!.id}/create-customer-id',
         options: Options(
           headers: {
-            "Authorization":"Bearer ${widget.data.token!}"
+            "Authorization":"Bearer ${widget.data.token!}",
+            "Accept": "application/json"
           }
         )
       );
-      return response.data['clientSecret'];
+      return response.data['clientSecretKey'];
     } catch (err) {
       print('Err charging user: ${err.toString()}');
     }

@@ -43,6 +43,12 @@ class _ViewerPageState extends State<ViewerPage> {
   }
 
   @override
+  void dispose() {
+    file = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if(file == null){
       return Scaffold(

@@ -56,7 +56,7 @@ class BillContainer extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                  '${"total".tr()}: ${bill.basket!.total}'
+                  '${"total".tr()}: ${bill.basket!.total} ₸'
               ),
               const SizedBox(
                 height: 5,

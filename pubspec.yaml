@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -41,14 +41,14 @@ dependencies:
   sqflite: any
   path_provider: any
   restart_app: any
-  flutter_stripe: ^9.2.0
+  flutter_stripe: any
   flutter_dotenv: ^5.0.2
   easy_localization: ^3.0.2
   translator: ^0.1.7
   web_socket_channel: any
   stomp_dart_client: any
   sockjs_client_wrapper: ^1.2.0
-  syncfusion_flutter_pdfviewer: ^19.1.69-beta
+  syncfusion_flutter_pdfviewer: ^21.2.3
   http: ^0.13.0
 
 
@@ -64,7 +64,7 @@ dev_dependencies:
   flutter_lints: any
   flutter_launcher_name: any
   image_picker: any
-  image_cropper: any
+  image_cropper: ^4.0.1
 
 
 
