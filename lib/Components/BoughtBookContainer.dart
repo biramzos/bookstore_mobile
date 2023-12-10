@@ -26,7 +26,7 @@ class BoughtBookContainerState extends State<BoughtBookContainer>{
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ViewerPage(book: widget.book, user: widget.user)
+                builder: (context) => ViewerPage(book: widget.book, user: widget.user, isPreview: false)
             )
         );
       },
@@ -53,14 +53,11 @@ class BoughtBookContainerState extends State<BoughtBookContainer>{
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Image.network(
                     BookService.getPreviewLinkById(widget.book.id),
-                    width: 70,
+                    width: 60,
                   ),
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
                 SizedBox(
-                  width: 290,
+                  width: MediaQuery.sizeOf(context).width * 0.74,
                   child: Center(
                     child: Column(
                       children: [
@@ -68,7 +65,7 @@ class BoughtBookContainerState extends State<BoughtBookContainer>{
                           '${widget.book.name}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize: 16,
                           ),
                           softWrap: false,
                           maxLines: 2,

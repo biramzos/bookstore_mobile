@@ -45,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
   void connectToServer() async {
     client = StompClient(
         config: StompConfig(
-            url: '${dotenv.env['URL']}/chat',
+            url: '${dotenv.env['WSURL']}/chat',
             onConnect: onConnect,
             onWebSocketError: (dynamic error) => debugPrint(error.toString())
         )

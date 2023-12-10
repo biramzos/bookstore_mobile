@@ -2,10 +2,13 @@ import 'package:Bookstore/APIs/UserService.dart';
 import 'package:Bookstore/Components/BookContainer.dart';
 import 'package:flutter/material.dart';
 import '../../../APIs/BookService.dart';
+import '../../../Backup/HexColor.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:translator/translator.dart';
+
+import '../ChatsPage/ChatsPage.dart';
 
 class SearchPage extends StatefulWidget {
   final User data;
@@ -128,6 +131,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     if(books == null){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: Container(
           color: Colors.white,
           child: Center(
@@ -140,8 +144,28 @@ class _SearchPageState extends State<SearchPage> {
         ),
       );
     }
-    return SingleChildScrollView(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "basket".tr(),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+              color: Colors.white
+          ),
+        ),
+        backgroundColor: Colors.green,
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(user: widget.data)));
+              },
+              icon: const Icon(Icons.chat, color: Colors.white)
+          )
+        ],
+      ),
+      backgroundColor: HexColor.fromHex("#F5F7F6"),
+      body: Center(
         child: Column(
           children: [
             Padding(
@@ -158,38 +182,19 @@ class _SearchPageState extends State<SearchPage> {
                 },
                 autocorrect: false,
               ),
-              // child: Row(
-              //   children: [
-              //     Container(
-              //       //width: 500,
-              //       child: TextFormField(
-              //         decoration: InputDecoration(
-              //           hintText: "${"search".tr()}...",
-              //         ),
-              //         onChanged: (value){
-              //           _search(value);
-              //         },
-              //         autocorrect: false,
-              //       ),
-              //     ),
-              //     IconButton(
-              //         onPressed: (){
-              //           _openFilterModal(context);
-              //         },
-              //         icon: const Icon(Icons.filter_list)
-              //     )
-              //   ]
-              // ),
             ),
-            ListView.builder(
-                itemCount: founded.length,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return BookContainer(
-                    book: founded[index],
-                    user: widget.data,
-                  );}
+            Container(
+              height: MediaQuery.sizeOf(context).height * 0.73,
+              child: ListView.builder(
+                  itemCount: founded.length,
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return BookContainer(
+                      book: founded[index],
+                      user: widget.data,
+                    );}
+              ),
             ),
           ],
         ),

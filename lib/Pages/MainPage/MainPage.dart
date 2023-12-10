@@ -1,4 +1,5 @@
 import 'package:Bookstore/Backup/DB.dart';
+import 'package:Bookstore/Backup/HexColor.dart';
 import 'package:Bookstore/Components/SplashScreen.dart';
 import 'package:Bookstore/Pages/MainPage/BookPage/BookPage.dart';
 import 'package:Bookstore/Pages/MainPage/ChatsPage/ChatsPage.dart';
@@ -56,19 +57,8 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text('QazaqBooks'),
-          backgroundColor: Colors.green,
-          actions: [
-            IconButton(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(user: widget.data)));
-                },
-                icon: const Icon(Icons.chat, color: Colors.white)
-            )
-          ],
-        ),
+        // backgroundColor: HexColor.fromHex('#F5F7F6'),
+        // backgroundColor: HexColor.fromHex('#46CF8B'),
         body: fragments[index],
         bottomNavigationBar: BottomNavigationBar(
           elevation: 20,

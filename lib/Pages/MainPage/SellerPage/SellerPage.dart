@@ -8,6 +8,8 @@ import 'package:Bookstore/Pages/MainPage/ChatPage/ChatPage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Backup/HexColor.dart';
+
 class SellerPage extends StatefulWidget {
   final Seller? seller;
   final User currentUser;
@@ -39,6 +41,7 @@ class _SellerPageState extends State<SellerPage> {
   Widget build(BuildContext context) {
     if(books == null){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: Container(
           color: Colors.white,
           child: Center(
@@ -57,6 +60,7 @@ class _SellerPageState extends State<SellerPage> {
           toolbarHeight: 0,
           backgroundColor: Colors.greenAccent,
         ),
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: SafeArea(
           child: CustomScrollView(
             slivers: [

@@ -8,10 +8,13 @@ import 'package:Bookstore/APIs/BookService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
 import 'package:Bookstore/Components/BookContainer.dart';
 import 'package:flutter/material.dart';
+import '../../../Backup/HexColor.dart';
 import '../../../Model/Basket.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
 import 'package:easy_localization/easy_localization.dart';
+
+import '../ChatsPage/ChatsPage.dart';
 
 
 class BasketPage extends StatefulWidget {
@@ -118,6 +121,7 @@ class _BasketPageState extends State<BasketPage> {
   Widget build(BuildContext context) {
     if(basket == null){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: Container(
           color: Colors.white,
           child: Center(
@@ -132,6 +136,26 @@ class _BasketPageState extends State<BasketPage> {
     }
     else if(basket!.books!.isEmpty){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
+        appBar: AppBar(
+          title: Text(
+            "basket".tr(),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                color: Colors.white
+            ),
+          ),
+          backgroundColor: Colors.green,
+          actions: [
+            IconButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(user: widget.data)));
+                },
+                icon: const Icon(Icons.chat, color: Colors.white)
+            )
+          ],
+        ),
         body: RefreshIndicator(
           onRefresh: () async {
             getData();
@@ -152,6 +176,26 @@ class _BasketPageState extends State<BasketPage> {
       );
     }
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "basket".tr(),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+              color: Colors.white
+          ),
+        ),
+        backgroundColor: Colors.green,
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(user: widget.data)));
+              },
+              icon: const Icon(Icons.chat, color: Colors.white)
+          )
+        ],
+      ),
+      backgroundColor: HexColor.fromHex("#F5F7F6"),
       body: Column(
         children:[
           Padding(
@@ -183,8 +227,12 @@ class _BasketPageState extends State<BasketPage> {
           const Divider(
             color: Colors.black,
           ),
-          Container(
-            height: 500,
+          Container( //(n * x * 0.13 <= x * 0.8) ?  n * x * 0.13 : x * 0.8
+            height:
+            (basket!.books!.length * MediaQuery.sizeOf(context).height * 0.14 <= MediaQuery.sizeOf(context).height * 0.6)
+                ? MediaQuery.sizeOf(context).height * 0.14 * basket!.books!.length
+                : MediaQuery.sizeOf(context).height * 0.6
+            ,
             child: RefreshIndicator(
               onRefresh: () async {
                 getData();
@@ -204,28 +252,34 @@ class _BasketPageState extends State<BasketPage> {
           const Divider(
             color: Colors.black,
           ),
-          TextButton(
-            onPressed: () {
-              makePayment();
-            },
-            child: Container(
-              width: 400,
-              child: Text(
-                "pay".tr(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.white
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 5.0,
+              horizontal: 10.0
+            ),
+            child: TextButton(
+              onPressed: () {
+                makePayment();
+              },
+              child: Container(
+                width: 400,
+                child: Text(
+                  "pay".tr(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white
+                  ),
                 ),
               ),
-            ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green),
-              shape:MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: const BorderSide(color: Colors.green),
-                  )
+              style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green),
+                shape:MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: const BorderSide(color: Colors.green),
+                    )
+                ),
               ),
             ),
           )

@@ -5,6 +5,8 @@ import 'package:Bookstore/Pages/MainPage/ChatPage/ChatPage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Backup/HexColor.dart';
+
 class ChatsPage extends StatefulWidget {
   final User user;
   const ChatsPage({Key? key, required this.user}) : super(key: key);
@@ -35,6 +37,7 @@ class _ChatsPageState extends State<ChatsPage> {
   Widget build(BuildContext context) {
     if(users == null){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         appBar: AppBar(
           title: const Text('QazaqBooks'),
           backgroundColor: Colors.green,
@@ -56,6 +59,7 @@ class _ChatsPageState extends State<ChatsPage> {
           title: const Text('QazaqBooks'),
           backgroundColor: Colors.green,
         ),
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: RefreshIndicator(
           onRefresh: () async {
             await getUsers();
@@ -80,6 +84,7 @@ class _ChatsPageState extends State<ChatsPage> {
         title: Text('chats_seller'.tr()),
         backgroundColor: Colors.green,
       ),
+      backgroundColor: HexColor.fromHex("#F5F7F6"),
       body: RefreshIndicator(
         onRefresh: () async {
           await getUsers();

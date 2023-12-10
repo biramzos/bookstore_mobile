@@ -9,6 +9,8 @@ import '../../../Model/User.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:translator/translator.dart';
 
+import '../ChatsPage/ChatsPage.dart';
+
 class FavouritesPage extends StatefulWidget {
   final User user;
   const FavouritesPage({Key? key, required this.user}) : super(key: key);
@@ -57,6 +59,25 @@ class _FavouritesPageState extends State<FavouritesPage> {
     }
     else if(books!.isEmpty){
       return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "basket".tr(),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                color: Colors.white
+            ),
+          ),
+          backgroundColor: Colors.green,
+          actions: [
+            IconButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(user: widget.user)));
+                },
+                icon: const Icon(Icons.chat, color: Colors.white)
+            )
+          ],
+        ),
         body: RefreshIndicator(
           onRefresh: () async {
             await getData();
@@ -77,6 +98,25 @@ class _FavouritesPageState extends State<FavouritesPage> {
       );
     }
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "basket".tr(),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+              color: Colors.white
+          ),
+        ),
+        backgroundColor: Colors.green,
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(user: widget.user)));
+              },
+              icon: const Icon(Icons.chat, color: Colors.white)
+          )
+        ],
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await getData();

@@ -11,24 +11,26 @@ import 'package:http/http.dart' as http;
 class ViewerPage extends StatefulWidget {
   final Book book;
   final User user;
-  const ViewerPage({Key? key, required this.book, required this.user}) : super(key: key);
+  final bool isPreview;
+  const ViewerPage({Key? key, required this.book, required this.user, required this.isPreview}) : super(key: key);
 
   @override
   State<ViewerPage> createState() => _ViewerPageState();
 }
 
 class _ViewerPageState extends State<ViewerPage> {
-
+  late PdfViewerController _pdfViewerController;
   File? file;
 
   @override
   void initState() {
+    _pdfViewerController = PdfViewerController();
     getBytesBook();
     super.initState();
   }
 
   Future<void> getBytesBook() async{
-    var url = Uri.parse('${dotenv.env['URL']}/api/v1/files/${widget.book.id}');
+    var url = Uri.parse('${dotenv.env['URL']}/api/v1/files/${widget.book.file!.id}');
     var response = await http.get(
         url,
         headers: {
@@ -37,7 +39,7 @@ class _ViewerPageState extends State<ViewerPage> {
     );
     var dir = await getApplicationDocumentsDirectory();
     setState((){
-      file = new File("${dir.path}/data.pdf");
+      file = File("${dir.path}/${widget.book.file!.name}");
       file!.writeAsBytesSync(response.bodyBytes, flush: true);
     });
   }
@@ -74,7 +76,15 @@ class _ViewerPageState extends State<ViewerPage> {
         backgroundColor: Colors.green,
       ),
       body: SfPdfViewer.file(
-          file!
+        file!,
+        onPageChanged: (PdfPageChangedDetails details) {
+          if (widget.isPreview) {
+            if (details.newPageNumber >= 9) {
+              _pdfViewerController.jumpToPage(8); // Limit to the first 8 pages
+            }
+          } // Else no limitation!
+        },
+        controller: _pdfViewerController,
       ),
     );
   }

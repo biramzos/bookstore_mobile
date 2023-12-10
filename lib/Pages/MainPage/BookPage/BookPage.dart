@@ -1,11 +1,12 @@
 import 'package:Bookstore/APIs/SellerService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
 import 'package:Bookstore/Model/Seller.dart';
-import 'package:Bookstore/Pages/MainPage/PreviewPage/PreviewPage.dart';
 import 'package:Bookstore/Pages/MainPage/SellerPage/SellerPage.dart';
+import 'package:Bookstore/Pages/MainPage/ViewerPage/ViewerPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
+import '../../../Backup/HexColor.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
 import 'package:translator/translator.dart';
@@ -68,9 +69,9 @@ class _BookPageState extends State<BookPage> {
 
   @override
   Widget build(BuildContext context) {
-    getData();
     if(desc == null || basket == null || checker == null || isLiked == null || seller == null){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: Container(
           color: Colors.white,
           child: Center(
@@ -89,6 +90,7 @@ class _BookPageState extends State<BookPage> {
         toolbarHeight: 0,
         backgroundColor: Colors.greenAccent,
       ),
+      backgroundColor: HexColor.fromHex("#F5F7F6"),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -280,7 +282,7 @@ class _BookPageState extends State<BookPage> {
                                   onPressed: (){
                                     Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => PreviewPage(book: widget.book, user: widget.user,))
+                                        MaterialPageRoute(builder: (context) => ViewerPage(book: widget.book, user: widget.user, isPreview: true,))
                                     );
                                   },
                                   child: Container(

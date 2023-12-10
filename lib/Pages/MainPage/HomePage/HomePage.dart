@@ -2,7 +2,9 @@
 
 import 'package:Bookstore/APIs/BookService.dart';
 import 'package:Bookstore/APIs/UserService.dart';
+import 'package:Bookstore/Backup/HexColor.dart';
 import 'package:Bookstore/Components/BookContainer.dart';
+import 'package:Bookstore/Pages/MainPage/ChatsPage/ChatsPage.dart';
 import 'package:flutter/material.dart';
 import '../../../Model/Book.dart';
 import '../../../Model/User.dart';
@@ -38,6 +40,7 @@ class _HomePageState extends State<HomePage> {
     const IconData book = IconData(0xf02d, fontFamily: "MyFlutterApp", fontPackage: null);
     if(books == null){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: Container(
           color: Colors.white,
           child: Center(
@@ -51,31 +54,48 @@ class _HomePageState extends State<HomePage> {
       );
     }
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        title: Container(
+          alignment: Alignment.center,
+          child: const Row(
+            children: [
+              SizedBox(
+                width: 50,
+              ),
+              Icon(
+                book,
+                size: 30,
+                color: Colors.white,
+              ),
+              Text(
+                'QazaqBooks',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Colors.white
+                ),
+              )
+            ],
+          ),
+        ),
+        backgroundColor: Colors.green,
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsPage(user: widget.data)));
+              },
+              icon: const Icon(Icons.chat, color: Colors.white)
+          )
+        ],
+      ),
+      backgroundColor: HexColor.fromHex("#F5F7F6"),
       body: Center(
         child: Column(
           children: [
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              children: const [
-                SizedBox(
-                  width: 100,
-                ),
-                Icon(
-                  book,
-                  size: 50,
-                  color: Colors.green,
-                ),
-                Text(
-                  'QazaqBooks',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30
-                  ),
-                )
-              ],
-            ),
             Container(
               height: 300,
               alignment: Alignment.center,
@@ -108,8 +128,8 @@ class _HomePageState extends State<HomePage> {
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.5 * 0.3,
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
+              width: MediaQuery.of(context).size.width * 0.98,
+              child: PageView.builder(
                     itemCount: books!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
@@ -123,6 +143,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+
       // body: Center(
       //   child: ListView.builder(
       //     itemCount: books!.length,

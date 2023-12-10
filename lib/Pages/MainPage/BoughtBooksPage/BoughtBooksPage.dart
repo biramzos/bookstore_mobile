@@ -6,6 +6,8 @@ import 'package:Bookstore/Model/User.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Backup/HexColor.dart';
+
 class BoughtBooksPage extends StatefulWidget {
   final Bill bill;
   final User user;
@@ -37,6 +39,7 @@ class _BoughtBooksPageState extends State<BoughtBooksPage> {
   Widget build(BuildContext context) {
     if(books == null){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: Container(
           color: Colors.white,
           child: Center(
@@ -50,6 +53,7 @@ class _BoughtBooksPageState extends State<BoughtBooksPage> {
       );
     }else if(widget.bill.status != "success"){
       return Scaffold(
+        backgroundColor: HexColor.fromHex("#F5F7F6"),
         body: RefreshIndicator(
           onRefresh: () async {
             await getBooks();
@@ -74,6 +78,7 @@ class _BoughtBooksPageState extends State<BoughtBooksPage> {
         title: Text('${'bill'.tr()} #${widget.bill.id}'),
         backgroundColor: Colors.green,
       ),
+      backgroundColor: HexColor.fromHex("#F5F7F6"),
       body: Center(
         child: RefreshIndicator(
           onRefresh: () async {

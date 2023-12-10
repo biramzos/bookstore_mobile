@@ -1,3 +1,4 @@
+import 'package:Bookstore/Backup/HexColor.dart';
 import 'package:Bookstore/Components/SplashScreen.dart';
 import 'package:Bookstore/Pages/LoginPage/LoginPage.dart';
 import 'package:Bookstore/Pages/MainPage/MainPage.dart';
