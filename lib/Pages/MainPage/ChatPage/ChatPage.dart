@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Bookstore/APIs/MessageService.dart';
 import 'package:Bookstore/Components/MessageContainer.dart';
 import 'package:Bookstore/Model/Message.dart';
@@ -6,9 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:stomp_dart_client/stomp.dart';
-import 'package:stomp_dart_client/stomp_config.dart';
-import 'package:stomp_dart_client/stomp_frame.dart';
+import 'package:stomp_dart_client/stomp_dart_client.dart';
 
 class ChatPage extends StatefulWidget {
   final User currentUser;
@@ -34,7 +34,7 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
   }
 
-  getData() async{
+  getData() async {
     await MessageService.getMessagesToUser(widget.user.id, widget.currentUser.token).then(
             (value) => setState((){
               messages = value;
@@ -42,16 +42,19 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void connectToServer() async {
+  void connectToServer() {
     client = StompClient(
-        config: StompConfig(
-            url: '${dotenv.env['WSURL']}/chat',
-            onConnect: onConnect,
-            onWebSocketError: (dynamic error) => debugPrint(error.toString())
-        )
+      config: StompConfig(
+        url: '${dotenv.env['WSURL']}/chat',
+        onConnect: onConnect,
+        onWebSocketError: (dynamic error) => debugPrint("WebSocket Error: $error"),
+        onDisconnect: (frame) => debugPrint("Disconnected"),
+      ),
     );
+
     client!.activate();
   }
+
 
   void onConnect(StompFrame frame) {
     debugPrint('Connected to server');

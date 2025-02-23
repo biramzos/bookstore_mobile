@@ -2,8 +2,11 @@ import 'package:Bookstore/APIs/MessageService.dart';
 import 'package:Bookstore/Components/UserContainer.dart';
 import 'package:Bookstore/Model/User.dart';
 import 'package:Bookstore/Pages/MainPage/ChatPage/ChatPage.dart';
+import 'package:Bookstore/core/configs/inject.config.dart';
+import 'package:Bookstore/core/services/common.service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../Backup/HexColor.dart';
 
@@ -18,13 +21,22 @@ class ChatsPage extends StatefulWidget {
 class _ChatsPageState extends State<ChatsPage> {
   List<User>? users;
 
+  CommonService commonService = inject<CommonService>();
+
   @override
   void initState() {
+    commonService.getMonths().then(
+      (value) {
+
+      }, onError: (error) {
+
+      }
+    );
     getUsers();
     super.initState();
   }
 
-  getUsers()async{
+  getUsers() async {
     await MessageService.getUsersWithChat(widget.user.token)
         .then((value) =>
         setState((){
