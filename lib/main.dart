@@ -9,10 +9,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'core/configs/inject.config.dart';
 
 void main() async {
-  configureDependencies();
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: "assets/.env");
@@ -24,7 +22,7 @@ void main() async {
             Locale('ru', 'RU'),
             Locale('kk', 'KZ')
           ],
-          path: 'assets/translations', // <-- change the path of the translation files
+          path: 'assets/translations',
           fallbackLocale: const Locale('kk', 'KZ'),
           child: const MyApp()
       ),
